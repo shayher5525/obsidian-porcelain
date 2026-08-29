@@ -1,5 +1,7 @@
 # Porcelain
 
+**English** · [中文](README_zh.md)
+
 A white-porcelain Obsidian theme — translucent surfaces, blue accents, flat controls,
 separators that fade at both ends.
 
