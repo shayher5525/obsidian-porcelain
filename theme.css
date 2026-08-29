@@ -2660,3 +2660,19 @@ body {
   --pc-tooltip-bg: hsla(209, 88%, 58%, 0.35);
   --pc-tooltip-blur: 2px;
 }
+
+/* Tooltip 卡顿与残影
+ *
+ * 残影是上一个 tooltip 的淡出动画还没走完、新的已经出现；卡顿来自
+ * backdrop-filter —— 每个 tooltip 都要新建一个滤镜合成层，在按钮之间
+ * 快速划过时等于连续创建销毁。
+ *
+ * 模糊已经降到 2px，几乎不产生视觉效果，却仍然付全额开销。直接去掉：
+ * 半透明靠 alpha 本身就成立，不需要滤镜。动画一并关掉。
+ */
+.tooltip {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  animation: none !important;
+  transition: none !important;
+}
