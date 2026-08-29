@@ -2997,3 +2997,26 @@ body {
   -webkit-backdrop-filter: blur(var(--pc-popup-blur));
   backdrop-filter: blur(var(--pc-popup-blur));
 }
+
+/* 面板本身不再做半透明和模糊。
+ *
+ * 光晕出在面板自己的 backdrop-filter 上：它采样的是已经被模糊过一遍的
+ * 背景，亮像素被二次抹开，从面板边缘往内渗，看着就是整块在发光。
+ * 背景该糊的已经由 .modal-bg 糊完了，面板改成实色，光就没有来路。
+ * 大范围柔和投影也换成贴边的一档，那种 32px 的散射同样读作辉光。 */
+
+.prompt,
+.suggestion-container,
+.suggestion-popover {
+  background-color: var(--pc-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.theme-dark .prompt,
+.theme-dark .suggestion-container,
+.theme-dark .suggestion-popover {
+  background-color: var(--pc-solid-alt);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
