@@ -2260,3 +2260,12 @@ span.cm-inline-code {
   padding: 0;
   font-size: inherit;
 }
+
+/* 标签栏底部留白：标签紧贴分隔线，活动标签的圆角和线粘在一起。
+ * 用 padding-bottom 而不是给标签加 margin —— 分隔线是画在容器
+ * background-position: bottom 上的，加内边距会把线推到留白之下，
+ * 线的位置不变，只是标签往上抬。 */
+.workspace-tab-header-container,
+.mod-root .workspace-tab-header-container {
+  padding-bottom: 6px;
+}
