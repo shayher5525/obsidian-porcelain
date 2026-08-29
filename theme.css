@@ -2486,3 +2486,72 @@ body .mod-cta:hover *,
 body .metadata-add-button:hover * {
   color: var(--pc-on-color);
 }
+
+/* =====================================================================
+ * 列表型属性的通用 pill
+ *
+ * tags / aliases / cssclasses 以及任何自定义列表属性用的都是同一个
+ * .multi-select-pill 控件。先给所有 pill 一个中性底，tags 和 aliases
+ * 的专属配色写在后面覆盖它——这样新增自定义属性时不会又变成裸文字。
+ * ===================================================================== */
+
+.metadata-property .multi-select-pill {
+  background: rgba(var(--pc-tint), 0.55);
+  color: var(--pc-ink);
+  border: none;
+  box-shadow: var(--pc-outline);
+  border-radius: var(--pc-radius);
+  padding: 0.1em 0.5em;
+  line-height: 1.5;
+  overflow: visible;
+}
+
+.metadata-property .multi-select-pill-content {
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: inherit;
+}
+
+.metadata-property .multi-select-pill-remove-button {
+  opacity: 0.55;
+}
+
+.metadata-property .multi-select-pill-remove-button:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* 专属配色重新声明一次，确保排在通用 pill 之后 */
+.metadata-property[data-property-key='tags'] .multi-select-pill {
+  background: var(--pc-red);
+  color: var(--pc-on-color);
+  box-shadow: none;
+}
+
+.metadata-property[data-property-key='tags'] .multi-select-pill-content,
+.metadata-property[data-property-key='tags'] .multi-select-pill a,
+.metadata-property[data-property-key='tags'] .multi-select-pill span,
+.metadata-property[data-property-key='tags'] .multi-select-pill-remove-button,
+.metadata-property[data-property-key='tags'] .multi-select-pill-remove-button svg {
+  color: var(--pc-on-color);
+}
+
+.metadata-property[data-property-key='tags'] .multi-select-pill-remove-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill {
+  background: var(--pc-lemon);
+  color: var(--pc-lemon-ink);
+  box-shadow: none;
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill-content,
+.metadata-property[data-property-key='aliases'] .multi-select-pill a,
+.metadata-property[data-property-key='aliases'] .multi-select-pill span,
+.metadata-property[data-property-key='aliases'] .multi-select-pill-remove-button,
+.metadata-property[data-property-key='aliases'] .multi-select-pill-remove-button svg {
+  color: var(--pc-lemon-ink);
+}
