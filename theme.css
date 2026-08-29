@@ -2676,3 +2676,11 @@ body {
   animation: none !important;
   transition: none !important;
 }
+
+/* 界面闪动：玻璃层用了 contain: paint。它在这里没有必要——那一层是
+ * position: fixed、没有子节点，本来就不会影响外部布局；而 contain
+ * 会让它成为独立的绘制单元，某些 Chromium 版本在其上方有滤镜层出现
+ * 或消失时会整层重绘，表现为闪一下。去掉。 */
+.app-container::before {
+  contain: none;
+}
