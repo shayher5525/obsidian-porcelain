@@ -3109,3 +3109,58 @@ body {
   -webkit-backdrop-filter: blur(var(--pc-modal-backdrop-blur)) saturate(70%);
   backdrop-filter: blur(var(--pc-modal-backdrop-blur)) saturate(70%);
 }
+
+/* =====================================================================
+ * 弹出层玻璃：照搬 fork 的实测配置
+ *
+ * 之前几轮我把重模糊放在背景、面板做实色，方向反了，结果是 bloom。
+ * 正确的分工是：
+ *   背景        只糊 3px + 一层 16% 暗遮罩，保留结构、压一档亮度
+ *   面板本身    24px 模糊 + 180% 饱和，72% 白 —— 内容在面板下糊成残影
+ *
+ * 关键在于重模糊只发生一次，且发生在面板这一层。背景糊得轻，所以不会
+ * 出现亮斑向外扩散；面板糊得重，所以透出来的是柔和残影而不是可读文字。
+ * ===================================================================== */
+
+body {
+  --pc-popup-glass-bg: rgba(255, 255, 255, 0.72);
+  --pc-popup-glass-blur: 24px;
+  --pc-modal-container-blur: 3px;
+}
+
+.theme-dark {
+  --pc-popup-glass-bg: rgba(30, 34, 40, 0.72);
+}
+
+.modal-container {
+  -webkit-backdrop-filter: blur(var(--pc-modal-container-blur));
+  backdrop-filter: blur(var(--pc-modal-container-blur));
+}
+
+.modal-bg {
+  background: rgba(0, 0, 0, 0.16);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.prompt,
+.suggestion-container,
+.suggestion-popover,
+.popover.hover-popover,
+.menu,
+.modal {
+  background-color: var(--pc-popup-glass-bg);
+  -webkit-backdrop-filter: blur(var(--pc-popup-glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--pc-popup-glass-blur)) saturate(180%);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 设置面板依然实色 */
+.modal.mod-settings,
+.modal-container .modal.mod-settings {
+  background-color: var(--pc-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
