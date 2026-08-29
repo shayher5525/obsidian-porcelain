@@ -2091,3 +2091,59 @@ body {
 .markdown-source-view.mod-cm6 thead th {
   text-align: center !important;
 }
+
+/* =====================================================================
+ * Links in red
+ *
+ * Covers rendered links, live-preview link tokens, and the unresolved
+ * state. Internal links are the common case in a vault, so they get the
+ * full-strength red; unresolved ones stay red but lighter, otherwise a
+ * missing note reads the same as an existing one.
+ * ===================================================================== */
+
+body {
+  --pc-red: hsl(0, 72%, 50%);
+  --pc-red-hi: hsl(0, 76%, 58%);
+  --pc-red-faint: hsl(0, 45%, 68%);
+
+  --link-color: var(--pc-red);
+  --link-color-hover: var(--pc-red-hi);
+  --link-external-color: var(--pc-red);
+  --link-external-color-hover: var(--pc-red-hi);
+  --link-unresolved-color: var(--pc-red-faint);
+  --link-unresolved-opacity: 1;
+  --link-unresolved-decoration-color: var(--pc-red-faint);
+}
+
+.theme-dark {
+  --pc-red: hsl(0, 78%, 66%);
+  --pc-red-hi: hsl(0, 82%, 74%);
+  --pc-red-faint: hsl(0, 40%, 54%);
+}
+
+.markdown-rendered a,
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link,
+.internal-link,
+.external-link,
+.cm-link,
+.cm-url,
+.cm-hmd-internal-link,
+.cm-hmd-internal-link .cm-underline,
+.cm-formatting-link,
+.cm-link-alias,
+.cm-s-obsidian .cm-hmd-internal-link {
+  color: var(--pc-red);
+}
+
+.markdown-rendered a:hover,
+.internal-link:hover,
+.external-link:hover,
+.cm-hmd-internal-link:hover {
+  color: var(--pc-red-hi);
+}
+
+.markdown-rendered a.internal-link.is-unresolved,
+.internal-link.is-unresolved {
+  color: var(--pc-red-faint);
+}
