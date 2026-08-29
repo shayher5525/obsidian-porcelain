@@ -2454,3 +2454,14 @@ body {
   opacity: 1;
   background: rgba(0, 0, 0, 0.12);
 }
+
+/* 字重看起来偏细：独立版设了 -webkit-font-smoothing: antialiased。
+ * 在 macOS 上这会关掉次像素渲染（subpixel-antialiased），改用灰度
+ * 抗锯齿，笔画大约细掉半个像素——中文笔画密，差异更明显。
+ * Primary 没有设这一项，走系统默认，所以看着更厚实。改回 auto。 */
+body,
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
