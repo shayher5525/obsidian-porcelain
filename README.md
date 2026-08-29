@@ -1,6 +1,6 @@
 # Porcelain
 
-**English** · [中文](README_zh.md)
+**English** · [中文](README_zh.md) · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
 
 A white-porcelain Obsidian theme — translucent surfaces, blue accents, flat controls,
 separators that fade at both ends.
