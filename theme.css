@@ -2731,3 +2731,23 @@ body:not(.is-focused) .workspace-tab-header.is-active .workspace-tab-header-inne
   color: var(--pc-on-color) !important;
   stroke: currentColor;
 }
+
+/* 设置界面改纯白
+ *
+ * 半透明 + 模糊在这里帮倒忙：设置面板面积大、停留时间长，背后又常常是
+ * 高饱和的选中行，24px 模糊会把那片蓝晕成一大块色斑，压在正文上很脏。
+ * 菜单、命令面板这类小而短暂的浮层保留玻璃效果，设置单独走实色。 */
+.modal.mod-settings,
+.modal-container .modal.mod-settings {
+  background-color: var(--pc-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.modal.mod-settings .vertical-tab-header,
+.modal.mod-settings .vertical-tab-content-container,
+.modal.mod-settings .vertical-tab-content,
+.modal.mod-settings .horizontal-tab-content-container,
+.modal.mod-settings .modal-content {
+  background-color: transparent;
+}
