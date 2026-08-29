@@ -2931,3 +2931,31 @@ kbd {
   color: var(--pc-ink);
   background: rgba(var(--pc-tint), 0.5);
 }
+
+/* =====================================================================
+ * Blur the app behind any modal
+ *
+ * The dim layer (.modal-bg) covers the whole window while a modal or the
+ * command palette is open, so the blur belongs there rather than on each
+ * panel. One full-screen filter, created once when the modal opens and
+ * static while it is up — unlike a per-hover tooltip filter, this one
+ * does not re-composite on pointer movement.
+ *
+ * With the backdrop already blurred, the panel itself needs less of its
+ * own: its blur drops so the two do not compound into mud.
+ * ===================================================================== */
+
+body {
+  --pc-modal-backdrop-blur: 14px;
+  --pc-prompt-blur: 12px;
+}
+
+.modal-bg {
+  background: rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(var(--pc-modal-backdrop-blur)) saturate(120%);
+  backdrop-filter: blur(var(--pc-modal-backdrop-blur)) saturate(120%);
+}
+
+.theme-dark .modal-bg {
+  background: rgba(0, 0, 0, 0.28);
+}
