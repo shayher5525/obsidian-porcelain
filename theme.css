@@ -2643,3 +2643,11 @@ body {
 .markdown-source-view.mod-cm6 .cm-header-2 {
   color: var(--pc-blue);
 }
+
+/* Tooltip 看着不透明的原因不是 alpha 没生效，而是 20px 模糊把背后的
+ * 文字彻底抹成一片均匀色——半透明确实在起作用，但没有任何可辨认的
+ * 结构透出来，视觉上就等于实色。把模糊降到 5px，让背后的层次留下来。 */
+body {
+  --pc-tooltip-bg: hsla(209, 88%, 58%, 0.48);
+  --pc-tooltip-blur: 5px;
+}
