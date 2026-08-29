@@ -2684,3 +2684,9 @@ body {
 .app-container::before {
   contain: none;
 }
+
+/* Tooltip 蓝加深：底色亮度 58% → 46%，alpha 提到 0.5。
+ * 之前压在浅色侧边栏上，白字和背景的对比不够。 */
+body {
+  --pc-tooltip-bg: hsla(209, 88%, 46%, 0.5);
+}
