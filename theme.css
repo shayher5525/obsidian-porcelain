@@ -3020,3 +3020,62 @@ body {
   background-color: var(--pc-solid-alt);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
+
+/* =====================================================================
+ * Command palette, third pass — matching the reference's feel
+ *
+ * Reading the reference again: the background *is* blurred, but it is
+ * not dimmed. Everything stays bright and airy, and the panel is a
+ * translucent veil — the document behind it is visible as soft ghosting,
+ * not covered up.
+ *
+ * That reframes the glow: it was the contrast between an opaque white
+ * panel and a darkened surround. A bright panel ringed by a dark field
+ * always reads as luminous. Removing the dark dim removes the effect,
+ * and the panel can go back to being translucent.
+ *
+ * The panel carries no filter of its own — the blur already happened on
+ * .modal-bg, and stacking a second one is what smeared light in from the
+ * edges before. It just lets the already-blurred backdrop through.
+ * ===================================================================== */
+
+body {
+  --pc-modal-backdrop-blur: 16px;
+  --pc-modal-veil: rgba(255, 255, 255, 0.18);
+  --pc-prompt-bg: rgba(255, 255, 255, 0.78);
+}
+
+.theme-dark {
+  --pc-modal-veil: rgba(0, 0, 0, 0.24);
+  --pc-prompt-bg: rgba(28, 32, 38, 0.82);
+}
+
+.modal-bg {
+  background: var(--pc-modal-veil);
+  -webkit-backdrop-filter: blur(var(--pc-modal-backdrop-blur));
+  backdrop-filter: blur(var(--pc-modal-backdrop-blur));
+}
+
+.prompt,
+.suggestion-container,
+.suggestion-popover {
+  background-color: var(--pc-prompt-bg);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.theme-dark .prompt,
+.theme-dark .suggestion-container,
+.theme-dark .suggestion-popover {
+  background-color: var(--pc-prompt-bg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* 设置界面仍然走实色：它面积大、停留久，透出来的内容会一直干扰阅读 */
+.modal.mod-settings,
+.modal-container .modal.mod-settings {
+  background-color: var(--pc-solid);
+}
