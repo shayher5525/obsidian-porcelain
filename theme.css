@@ -2177,3 +2177,37 @@ body {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
+
+/* =====================================================================
+ * Inline code in pink
+ *
+ * `code` spans, not fenced blocks — those keep the neutral code surface.
+ * Highlights go back to the yellow wash: two different meanings sharing
+ * one color would make `path.docx` and ==emphasis== indistinguishable.
+ * ===================================================================== */
+
+.markdown-rendered code:not(pre code),
+.cm-inline-code:not(.cm-formatting) {
+  background: var(--pc-pink);
+  color: var(--pc-pink-ink);
+  border-radius: var(--pc-radius);
+  padding: 0.1em 0.4em;
+  font-size: 0.9em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* The backticks themselves, visible when the cursor is on the line */
+.cm-inline-code.cm-formatting {
+  background: var(--pc-pink);
+  color: var(--pc-pink-ink);
+  opacity: 0.5;
+}
+
+.markdown-rendered mark,
+.cm-highlight {
+  background: var(--text-highlight-bg);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0.05em 0.2em;
+}
