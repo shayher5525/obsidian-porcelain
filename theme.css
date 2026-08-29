@@ -1442,3 +1442,231 @@ body {
 .nn-split-container > .nn-list-pane {
   border: none;
 }
+
+/* =====================================================================
+ * 13  Callouts, revisited
+ *
+ * Type is carried by the header bar only: blue by default, orange for
+ * the warning family, green for the tip family. The body is a light
+ * wash so the page still reads through it, outlined in the header's own
+ * color.
+ *
+ * The outline is an inset shadow, not a border: the container clips to
+ * its radius, so a border would inset the body relative to the header
+ * and double up at the seam.
+ * ===================================================================== */
+
+body {
+  --pc-callout-head: var(--pc-blue);
+  --pc-callout-body: rgba(255, 255, 255, 0.55);
+  --pc-callout-head-text: var(--pc-on-color);
+  --pc-callout-green: hsl(152, 55%, 42%);
+
+  --callout-radius: var(--pc-radius-lg);
+  --callout-border-width: 0px;
+  --callout-border-opacity: 0;
+  --callout-blend-mode: normal;
+  --callout-title-padding: 10px 14px;
+  --callout-content-padding: 10px 14px;
+}
+
+.theme-dark {
+  --pc-callout-body: rgba(255, 255, 255, 0.035);
+  --pc-callout-green: hsl(152, 50%, 46%);
+}
+
+.callout[data-callout='warning'],
+.callout[data-callout='caution'],
+.callout[data-callout='attention'],
+.callout[data-callout='danger'],
+.callout[data-callout='error'],
+.callout[data-callout='fail'],
+.callout[data-callout='missing'],
+.callout[data-callout='bug'],
+.callout[data-callout='important'] {
+  --pc-callout-head: var(--pc-orange);
+}
+
+.callout[data-callout='info'],
+.callout[data-callout='tip'],
+.callout[data-callout='hint'],
+.callout[data-callout='success'],
+.callout[data-callout='check'],
+.callout[data-callout='done'] {
+  --pc-callout-head: var(--pc-callout-green);
+}
+
+.callout {
+  background: transparent;
+  border: none;
+  border-radius: var(--callout-radius);
+  box-shadow: var(--pc-outline);
+  overflow: hidden;
+  padding: 0;
+}
+
+.callout .callout-title {
+  --pc-fill: var(--pc-callout-head);
+  background-color: var(--pc-fill);
+  background-image:
+    radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+  color: var(--pc-callout-head-text);
+  border: none;
+  box-shadow: none;
+  padding: var(--callout-title-padding);
+}
+
+.callout .callout-title-inner,
+.callout .callout-icon,
+.callout .callout-icon svg,
+.callout .callout-fold,
+.callout .callout-fold svg {
+  color: var(--pc-callout-head-text);
+}
+
+.callout .callout-content {
+  background-color: var(--pc-callout-body);
+  box-shadow: inset 0 0 0 1px var(--pc-callout-head);
+  border: none;
+  padding: var(--callout-content-padding);
+}
+
+/* =====================================================================
+ * 14  Vault switcher
+ *
+ * A full-bleed bottom bar, not a line. As a line it could not do its
+ * second job: the file list scrolls right up to it, and Notebook
+ * Navigator's pane divider runs down through the switcher's side
+ * margins, so rows showed through and the two rules crossed. The bar is
+ * near-opaque and spans the full sidebar width, so it masks both; the
+ * fading rule rides on its top edge.
+ * ===================================================================== */
+
+.workspace-sidedock-vault-profile {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0 8px;
+  padding: 8px;
+  overflow: visible;
+}
+
+.workspace-sidedock-vault-profile::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -8px;
+  height: auto;
+  width: auto;
+  pointer-events: none;
+  background-color: rgba(var(--pc-tint), 0.94);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--pc-line) 18%,
+    var(--pc-line) 82%,
+    transparent 100%
+  );
+  background-size: 100% 1px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+.theme-dark .workspace-sidedock-vault-profile::before {
+  background-color: rgba(var(--pc-tint), 0.96);
+}
+
+.nn-split-container,
+.nn-split-container > .nn-nav-pane,
+.nn-split-container > .nn-list-pane {
+  z-index: 0;
+}
+
+/* =====================================================================
+ * 15  Notebook Navigator: pills and quick actions
+ *
+ * Both are opaque on purpose. A translucent panel lets a long title
+ * bleed through and collide with the icons; a translucent pill on a
+ * saturated row loses its edge. The fills are pre-composited with
+ * color-mix so they read like the translucent version but actually
+ * cover what is behind them.
+ * ===================================================================== */
+
+.nn-desktop .nn-file:hover .nn-quick-actions-panel,
+.nn-file.nn-selected .nn-quick-actions-panel {
+  background: color-mix(in srgb, hsl(0, 0%, 100%) 18%, var(--pc-blue));
+  border-color: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-quick-actions-panel {
+  background: color-mix(in srgb, hsl(0, 0%, 100%) 18%, var(--pc-orange));
+}
+
+.theme-dark .nn-desktop .nn-file:hover .nn-quick-actions-panel,
+.theme-dark .nn-file.nn-selected .nn-quick-actions-panel {
+  background: color-mix(in srgb, hsl(0, 0%, 0%) 12%, var(--pc-blue));
+}
+
+.theme-dark .nn-desktop .nn-file:not(.nn-selected):hover .nn-quick-actions-panel {
+  background: color-mix(in srgb, hsl(0, 0%, 0%) 12%, var(--pc-orange));
+}
+
+.nn-desktop .nn-file:hover .nn-quick-action-item,
+.nn-file.nn-selected .nn-quick-action-item {
+  color: var(--pc-on-color);
+}
+
+.nn-desktop .nn-file:hover .nn-quick-action-separator,
+.nn-file.nn-selected .nn-quick-action-separator {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Tag pills: one fill per row state, never a border. NN resolves pill
+ * borders through --nn-file-pill-border-color-resolved, so clearing
+ * border alone leaves a ring. */
+.nn-file .nn-file-tag,
+.nn-file .nn-file-tag.nn-file-property {
+  background-color: var(--pc-blue);
+  color: var(--pc-on-color);
+  border: none;
+  box-shadow: none;
+  --nn-file-pill-border-color-resolved: transparent;
+}
+
+.nn-file .nn-file-tag *,
+.nn-file .nn-file-tag.nn-file-property * {
+  color: var(--pc-on-color);
+}
+
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-tag,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-tag.nn-file-property {
+  background-color: color-mix(in srgb, hsl(0, 0%, 100%) 30%, var(--pc-orange));
+}
+
+.nn-file.nn-selected .nn-file-tag,
+.nn-file.nn-selected .nn-file-tag.nn-file-property {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+body {
+  --nn-theme-file-selected-tag-border-color: transparent;
+  --nn-theme-file-selected-property-border-color: transparent;
+}
