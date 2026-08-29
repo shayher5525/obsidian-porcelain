@@ -2222,3 +2222,41 @@ body {
   --pc-pink: hsla(336, 70%, 60%, 0.32);
   --pc-pink-ink: hsl(336, 78%, 82%);
 }
+
+/* 行内代码上粉：表格里生效、正文没生效，说明两条渲染路径命中的选择器
+ * 不同——表格走的是渲染后的 <code>，正文在实时预览里是 CodeMirror 的
+ * token span。这里把两条路径都写死，并覆盖标题、列表、引用、callout
+ * 等所有容器内的行内代码。 */
+
+.markdown-rendered code:not(pre code),
+.markdown-preview-view code:not(pre code),
+.markdown-source-view.mod-cm6 .cm-inline-code,
+.cm-s-obsidian .cm-inline-code,
+span.cm-inline-code {
+  background: var(--pc-pink) !important;
+  color: var(--pc-pink-ink) !important;
+  border-radius: var(--pc-radius);
+  padding: 0.1em 0.4em;
+  font-size: 0.9em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* 反引号本身淡化，但底色要连成一片，否则一段代码会被切成三块 */
+.markdown-source-view.mod-cm6 .cm-inline-code.cm-formatting,
+.cm-s-obsidian .cm-inline-code.cm-formatting {
+  background: var(--pc-pink) !important;
+  color: var(--pc-pink-ink) !important;
+  opacity: 0.55;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+
+/* 围栏代码块内部不参与 */
+.markdown-rendered pre code,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-inline-code {
+  background: transparent !important;
+  color: var(--code-normal) !important;
+  padding: 0;
+  font-size: inherit;
+}
