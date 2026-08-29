@@ -2474,7 +2474,7 @@ body .mod-cta:hover,
 body input[type='submit']:hover,
 body .metadata-add-button:hover,
 body .metadata-properties-heading .metadata-add-button:hover {
-  --pc-fill: var(--pc-blue-hi);
+  --pc-fill: var(--pc-blue-lo);
   background-color: var(--pc-fill);
   color: var(--pc-on-color);
   box-shadow: none;
