@@ -1,0 +1,1391 @@
+/* =====================================================================
+ * Porcelain — an Obsidian theme
+ *
+ * Written from scratch on Obsidian's own CSS variables. No third-party
+ * theme code is included.
+ *
+ * Design rules this file follows:
+ *   1. Surfaces are translucent and share one tint. Panes never become
+ *      opaque cards.
+ *   2. Nothing is embossed. Depth comes from a single 1px outline, never
+ *      from stacked inset highlights and shadows.
+ *   3. Separators fade to transparent at both ends, so containers with
+ *      different padding never produce ragged line ends.
+ *   4. Colored blocks carry an off-axis bloom, not a linear gradient.
+ *   5. State changes alter color only — never padding, border width, or
+ *      position — so nothing shifts under the cursor.
+ *
+ * Sections
+ *   01  Design tokens
+ *   02  Surfaces and window chrome
+ *   03  Separators
+ *   04  Tabs
+ *   05  Sidebars, file tree, ribbon
+ *   06  Controls
+ *   07  Menus, modals, settings, prompts
+ *   08  Editor typography
+ *   09  Code, tables, callouts, quotes
+ *   10  Tags, links, embeds
+ *   11  Scrollbars, tooltips, misc
+ *   12  Notebook Navigator
+ * ===================================================================== */
+
+/* =====================================================================
+ * 01  Design tokens
+ * ===================================================================== */
+
+.theme-light {
+  color-scheme: light;
+
+  /* Brand */
+  --accent-h: 209;
+  --accent-s: 88%;
+  --accent-l: 54%;
+
+  --pc-blue: hsl(209, 88%, 54%);
+  --pc-blue-hi: hsl(209, 88%, 62%);
+  --pc-blue-lo: hsl(209, 88%, 46%);
+  --pc-orange: #ff5d24;
+  --pc-on-color: hsl(0, 0%, 100%);
+
+  /* Glass. --pc-tint is an unwrapped rgb triplet so alpha can vary. */
+  --pc-tint: 255, 255, 255;
+  --pc-veil: 0.62;
+  --pc-veil-strong: 0.78;
+  --pc-sidebar-tint: 255, 255, 255;
+  --pc-sidebar-veil: 0.2;
+  --pc-line: rgba(0, 0, 0, 0.1);
+  --pc-line-strong: rgba(0, 0, 0, 0.16);
+
+  /* Ink */
+  --pc-ink: hsl(213, 22%, 20%);
+  --pc-ink-muted: hsl(213, 14%, 42%);
+  --pc-ink-faint: hsl(213, 12%, 62%);
+
+  /* Solid fallbacks, for surfaces that must not let the desktop through */
+  --pc-solid: hsl(0, 0%, 100%);
+  --pc-solid-alt: hsl(210, 30%, 98%);
+}
+
+.theme-dark {
+  color-scheme: dark;
+
+  --accent-h: 209;
+  --accent-s: 88%;
+  --accent-l: 58%;
+
+  --pc-blue: hsl(209, 88%, 56%);
+  --pc-blue-hi: hsl(209, 88%, 64%);
+  --pc-blue-lo: hsl(209, 88%, 48%);
+  --pc-orange: #ff5d24;
+  --pc-on-color: hsl(0, 0%, 100%);
+
+  --pc-tint: 22, 25, 31;
+  --pc-veil: 0.86;
+  --pc-veil-strong: 0.94;
+  --pc-sidebar-tint: 255, 255, 255;
+  --pc-sidebar-veil: 0.04;
+  --pc-line: rgba(255, 255, 255, 0.12);
+  --pc-line-strong: rgba(255, 255, 255, 0.2);
+
+  --pc-ink: hsl(210, 18%, 88%);
+  --pc-ink-muted: hsl(210, 12%, 64%);
+  --pc-ink-faint: hsl(210, 10%, 46%);
+
+  --pc-solid: hsl(220, 14%, 12%);
+  --pc-solid-alt: hsl(220, 14%, 15%);
+}
+
+body {
+  /* Bloom: three off-axis radial gradients over a solid base. Focal
+   * points differ per layer so no linear direction reads through. */
+  --pc-bloom-light: 34%;
+  --pc-bloom-light-soft: 16%;
+  --pc-bloom-dark: 10%;
+
+  /* The single outline that replaces every 3D treatment */
+  --pc-outline: inset 0 0 0 1px var(--pc-line);
+  --pc-outline-strong: inset 0 0 0 1px var(--pc-line-strong);
+
+  /* Separator gradient stops */
+  --pc-fade-in: 20%;
+  --pc-fade-out: 80%;
+
+  --pc-radius: 8px;
+  --pc-radius-lg: 12px;
+
+  /* ---- Obsidian core variable mapping ---- */
+  --color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --color-accent-1: var(--pc-blue-hi);
+  --color-accent-2: var(--pc-blue-lo);
+  --interactive-accent: var(--pc-blue);
+  --interactive-accent-hover: var(--pc-blue-hi);
+  --text-on-accent: var(--pc-on-color);
+
+  --background-primary: transparent;
+  --background-primary-alt: transparent;
+  --background-secondary: transparent;
+  --background-secondary-alt: transparent;
+  --background-modifier-border: var(--pc-line);
+  --background-modifier-border-hover: var(--pc-line-strong);
+  --background-modifier-border-focus: var(--color-accent);
+  --background-modifier-hover: rgba(var(--pc-tint), 0.35);
+  --background-modifier-active-hover: rgba(var(--pc-tint), 0.45);
+  --background-modifier-form-field: rgba(var(--pc-tint), 0.45);
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.08);
+
+  --text-normal: var(--pc-ink);
+  --text-muted: var(--pc-ink-muted);
+  --text-faint: var(--pc-ink-faint);
+  --text-accent: var(--color-accent);
+  --text-accent-hover: var(--pc-blue-hi);
+  --text-selection: hsla(209, 88%, 54%, 0.2);
+  --text-highlight-bg: hsla(48, 100%, 60%, 0.4);
+
+  --divider-color: var(--pc-line);
+  --divider-color-hover: var(--color-accent);
+  --divider-width: 0px;
+  --divider-width-hover: 3px;
+
+  --radius-s: 4px;
+  --radius-m: var(--pc-radius);
+  --radius-l: var(--pc-radius-lg);
+
+  --icon-color: var(--pc-ink-muted);
+  --icon-color-hover: var(--pc-ink);
+  --icon-color-active: var(--color-accent);
+  --icon-opacity: 1;
+  --icon-opacity-hover: 1;
+
+  --scrollbar-thumb-bg: rgba(128, 140, 155, 0.28);
+  --scrollbar-active-thumb-bg: rgba(128, 140, 155, 0.5);
+  --scrollbar-bg: transparent;
+
+  --shadow-s: none;
+  --shadow-l: 0 8px 32px rgba(0, 0, 0, 0.14);
+
+  /* Motion: only opacity/color transitions survive */
+  --anim-duration-none: 0s;
+  --anim-duration-fast: 0s;
+  --anim-duration-moderate: 0s;
+}
+
+/* =====================================================================
+ * 02  Surfaces and window chrome
+ *
+ * The glass lives on one fixed, empty layer. Putting backdrop-filter on
+ * a container that holds the UI makes every child repaint invalidate the
+ * whole filtered layer — hovering a file list then costs a full-window
+ * blur recompute. An empty fixed layer has a static backdrop, so the
+ * result caches and interface repaints happen above it.
+ * ===================================================================== */
+
+.app-container {
+  background: transparent;
+  isolation: isolate;
+}
+
+.app-container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  contain: paint;
+  background: rgba(var(--pc-tint), var(--pc-veil));
+}
+
+/* Every structural container stays transparent so the veil shows through */
+.horizontal-main-container,
+.workspace,
+.workspace-split,
+.workspace-tabs,
+.workspace-tab-container,
+.workspace-leaf,
+.workspace-leaf-content,
+.view-content,
+.view-header,
+.markdown-source-view,
+.markdown-preview-view,
+.markdown-reading-view,
+.cm-editor,
+.cm-scroller,
+.titlebar,
+.status-bar,
+.workspace-tab-header-container,
+.nav-files-container {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Sidebars sit one step off the content plane */
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split,
+.workspace-ribbon {
+  background: rgba(var(--pc-sidebar-tint), var(--pc-sidebar-veil));
+  margin: 0;
+}
+
+body {
+  color: var(--text-normal);
+}
+
+/* Popout windows have no app content behind them; give them a floor so
+ * teardown never exposes the bare (black) Electron window. */
+body.is-popout-window {
+  background-color: var(--pc-solid);
+}
+
+body.is-popout-window .app-container::before {
+  display: none;
+}
+
+/* =====================================================================
+ * 03  Separators
+ *
+ * Drawn as gradients rather than borders. A border spans its element
+ * exactly; sibling containers with different padding then produce lines
+ * that start and stop at different x, which reads as misalignment. A
+ * gradient that fades out at both ends has no visible endpoint to
+ * misalign.
+ * ===================================================================== */
+
+body {
+  --pc-rule-h: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--pc-line) var(--pc-fade-in),
+    var(--pc-line) var(--pc-fade-out),
+    transparent 100%
+  );
+  --pc-rule-v: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--pc-line) var(--pc-fade-in),
+    var(--pc-line) var(--pc-fade-out),
+    transparent 100%
+  );
+}
+
+/* Horizontal rule at the bottom edge of an element */
+.workspace-tab-header-container,
+.nav-header,
+.mod-root .workspace-tab-header-container {
+  border: none;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+/* Horizontal rule at the top edge */
+.workspace-leaf-content[data-type='markdown'] > .view-content,
+.status-bar {
+  border: none;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+/* Vertical rule on the trailing edge */
+.workspace-ribbon.mod-left {
+  border: none;
+  background-image: var(--pc-rule-v);
+  background-size: 1px 100%;
+  background-position: top right;
+  background-repeat: no-repeat;
+}
+
+/* The editor pane is framed on three sides */
+.mod-root .workspace-leaf-content {
+  border: none;
+  background-image: var(--pc-rule-v), var(--pc-rule-v), var(--pc-rule-h);
+  background-size: 1px 100%, 1px 100%, 100% 1px;
+  background-position: top left, top right, bottom left;
+  background-repeat: no-repeat;
+}
+
+/* Resize handles carry no line of their own; they only light up on hover */
+.workspace-leaf-resize-handle {
+  border-radius: 0;
+}
+
+/* =====================================================================
+ * 04  Tabs
+ * ===================================================================== */
+
+body {
+  --tab-radius: var(--pc-radius);
+  --tab-radius-active: var(--pc-radius);
+  --tab-background-active: transparent;
+  --tab-text-color: var(--pc-ink-muted);
+  --tab-text-color-active: var(--pc-ink);
+  --tab-text-color-focused-active-current: var(--pc-on-color);
+  --tab-outline-width: 0px;
+  --tab-outline-color: transparent;
+  --tab-curve: 0px;
+  --tab-divider-color: transparent;
+}
+
+.workspace-tab-header {
+  border: 1px solid transparent;
+  border-radius: var(--pc-radius);
+  box-shadow: none;
+  transition: none;
+}
+
+.workspace-tab-header:hover {
+  background: rgba(var(--pc-tint), 0.4);
+}
+
+.workspace .mod-root .workspace-tab-header.is-active,
+.workspace-tabs.mod-stacked .workspace-tab-header.is-active,
+.mod-left-split .workspace-tab-header.is-active,
+.mod-right-split .workspace-tab-header.is-active {
+  background-color: var(--pc-blue);
+  background-image:
+    radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-blue)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-blue)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-blue)) 0%,
+      transparent 100%
+    );
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-title,
+.workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.workspace-tab-header.is-active .workspace-tab-header-inner-close-button,
+.workspace-tab-header.is-active .workspace-tab-header-status-icon {
+  color: var(--pc-on-color);
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-close-button:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--pc-on-color);
+}
+
+.view-header {
+  border: none;
+}
+
+.view-header-title,
+.view-header-breadcrumb {
+  color: var(--pc-ink-muted);
+}
+
+.view-header-title {
+  color: var(--pc-ink);
+}
+
+/* =====================================================================
+ * 05  Sidebars, file tree, ribbon
+ *
+ * Row geometry is identical in every state — same padding, same 1px
+ * border, no transform. Only color changes. Adding a border or swapping
+ * padding on :hover/.is-active is what makes tree rows jump under the
+ * cursor.
+ * ===================================================================== */
+
+body {
+  --nav-item-padding: 5px 8px;
+  --nav-item-color: var(--pc-ink-muted);
+  --nav-item-color-hover: var(--pc-on-color);
+  --nav-item-color-active: var(--pc-on-color);
+  --nav-item-background-hover: transparent;
+  --nav-item-background-active: transparent;
+  --nav-item-weight-active: var(--font-medium);
+  --nav-indentation-guide-width: 0px;
+  --indentation-guide-color: transparent;
+  --indentation-guide-color-active: transparent;
+  --indentation-guide-width: 0px;
+
+  /* Shared bloom recipe, parameterised by --pc-fill at the use site */
+  --pc-bloom:
+    radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+}
+
+.tree-item-self,
+.nav-file-title,
+.nav-folder-title {
+  padding: var(--nav-item-padding);
+  border: 1px solid transparent;
+  border-radius: var(--pc-radius);
+  transform: none;
+  transition: none;
+  box-shadow: none;
+}
+
+.tree-item-self:active,
+.nav-file-title:active,
+.nav-folder-title:active {
+  transform: none;
+}
+
+/* Indentation guides off */
+.nav-folder-children,
+.tree-item-children {
+  border-inline-start: none;
+}
+
+.tree-item-children::before {
+  display: none;
+}
+
+/* Hover — orange */
+.tree-item-self.is-clickable:hover,
+.nav-file-title:hover,
+.nav-folder-title:hover,
+.backlink-pane > .tree-item-self:hover,
+.outgoing-link-pane > .tree-item-self:hover,
+.search-result-file-title:hover,
+.tag-pane-tag:hover {
+  --pc-fill: var(--pc-orange);
+  background-color: var(--pc-fill);
+  background-image: var(--pc-bloom);
+  border-color: transparent;
+  color: var(--pc-on-color);
+}
+
+/* Selection — blue */
+.tree-item-self.is-active,
+.tree-item-self.is-selected,
+.nav-file-title.is-active,
+.nav-folder-title.is-active {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image: var(--pc-bloom);
+  border-color: transparent;
+  color: var(--pc-on-color);
+}
+
+/* Selection wins over hover */
+.tree-item-self.is-active:hover,
+.nav-file-title.is-active:hover,
+.nav-folder-title.is-active:hover {
+  --pc-fill: var(--pc-orange);
+}
+
+.tree-item-self.is-clickable:hover .tree-item-inner,
+.tree-item-self.is-clickable:hover .tree-item-icon,
+.tree-item-self.is-clickable:hover .tree-item-flair,
+.tree-item-self.is-clickable:hover .nav-file-tag,
+.tree-item-self.is-active .tree-item-inner,
+.tree-item-self.is-active .tree-item-icon,
+.tree-item-self.is-active .tree-item-flair,
+.tree-item-self.is-active .nav-file-tag,
+.tree-item-self.is-selected .tree-item-inner,
+.backlink-pane > .tree-item-self:hover .tree-item-inner,
+.outgoing-link-pane > .tree-item-self:hover .tree-item-inner {
+  color: var(--pc-on-color);
+}
+
+.tree-item-self.is-clickable:hover .tree-item-flair,
+.tree-item-self.is-active .tree-item-flair,
+.tree-item-self.is-clickable:hover .nav-file-tag,
+.tree-item-self.is-active .nav-file-tag {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.nav-file-tag {
+  color: var(--pc-ink-faint);
+  background: transparent;
+  border: none;
+  font-size: var(--font-smallest);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Ribbon */
+.workspace-ribbon .side-dock-ribbon-action,
+.workspace-ribbon .clickable-icon {
+  color: var(--pc-ink-faint);
+  border-radius: var(--pc-radius);
+}
+
+.workspace-ribbon .clickable-icon:hover {
+  color: var(--pc-ink);
+  background: rgba(var(--pc-tint), 0.5);
+}
+
+.workspace-ribbon .clickable-icon.is-active {
+  color: var(--color-accent);
+}
+
+/* Vault switcher: no frame, one short rule above it */
+.workspace-sidedock-vault-profile {
+  position: relative;
+  overflow: visible;
+  border: none;
+  border-radius: var(--pc-radius);
+  background: rgba(var(--pc-tint), 0.3);
+  margin: 0 8px 8px;
+  padding: 6px 8px;
+}
+
+.workspace-sidedock-vault-profile::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--pc-line) var(--pc-fade-in),
+    var(--pc-line) var(--pc-fade-out),
+    transparent 100%
+  );
+}
+
+.workspace-drawer-vault-switcher,
+.workspace-drawer-vault-actions {
+  background: transparent;
+}
+
+/* Status bar */
+.status-bar-item {
+  color: var(--pc-ink-faint);
+}
+
+/* =====================================================================
+ * 06  Controls
+ *
+ * Uncolored controls get one flat outline. Colored controls get the
+ * bloom and no border at all — an outline on a saturated fill reads as
+ * a seam, and a transparent border on a border-box control shrinks the
+ * content box, which pushes absolutely positioned parts (a toggle knob)
+ * off center.
+ * ===================================================================== */
+
+body {
+  --input-height: 30px;
+  --input-radius: var(--pc-radius);
+  --button-radius: var(--pc-radius);
+  --toggle-radius: 14px;
+  --toggle-thumb-radius: 50%;
+  --checkbox-radius: 4px;
+  --checkbox-size: 16px;
+  --slider-track-height: 4px;
+  --slider-thumb-height: 16px;
+  --slider-thumb-width: 16px;
+  --slider-thumb-radius: 50%;
+  --slider-thumb-border-width: 0px;
+}
+
+button,
+.dropdown,
+input[type='text'],
+input[type='search'],
+input[type='number'],
+input[type='password'],
+input[type='email'],
+textarea,
+.setting-item-control input,
+.search-input-container input {
+  background: rgba(var(--pc-tint), 0.45);
+  color: var(--text-normal);
+  border: none;
+  border-radius: var(--pc-radius);
+  box-shadow: var(--pc-outline);
+  transition: none;
+}
+
+button:hover,
+.dropdown:hover,
+input[type='text']:hover,
+input[type='search']:hover,
+textarea:hover {
+  background: rgba(var(--pc-tint), 0.6);
+  box-shadow: var(--pc-outline);
+}
+
+input[type='text']:focus,
+input[type='search']:focus,
+input[type='number']:focus,
+input[type='password']:focus,
+textarea:focus,
+.dropdown:focus {
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+  outline: none;
+}
+
+button:active,
+.dropdown:active {
+  transform: none;
+  box-shadow: var(--pc-outline-strong);
+}
+
+/* Accent buttons */
+button.mod-cta,
+.mod-cta,
+input[type='submit'],
+.metadata-add-button {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image: var(--pc-bloom);
+  color: var(--pc-on-color);
+  border: none;
+  box-shadow: none;
+}
+
+button.mod-cta:hover,
+.mod-cta:hover {
+  --pc-fill: var(--pc-blue-hi);
+}
+
+button.mod-warning,
+.mod-warning {
+  background: var(--pc-orange);
+  color: var(--pc-on-color);
+  border: none;
+  box-shadow: none;
+}
+
+/* Toggle */
+.checkbox-container {
+  background: rgba(var(--pc-tint), 0.5);
+  border: none;
+  box-shadow: var(--pc-outline);
+  transition: none;
+}
+
+.checkbox-container:hover {
+  box-shadow: var(--pc-outline-strong);
+}
+
+.checkbox-container.is-enabled {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image: var(--pc-bloom);
+  border: none;
+  box-shadow: none;
+}
+
+.checkbox-container::after {
+  background: var(--pc-solid);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+/* Checkbox */
+input[type='checkbox'] {
+  border-radius: var(--checkbox-radius);
+  box-shadow: var(--pc-outline);
+  background: rgba(var(--pc-tint), 0.5);
+  border: none;
+}
+
+input[type='checkbox']:checked {
+  background: var(--pc-blue);
+  box-shadow: none;
+}
+
+/* Slider */
+input[type='range'] {
+  background: transparent;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  background: rgba(var(--pc-tint), 0.5);
+  box-shadow: var(--pc-outline);
+  border-radius: 999px;
+  height: var(--slider-track-height);
+}
+
+input[type='range']::-webkit-slider-thumb {
+  background: var(--pc-solid);
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+}
+
+/* Clickable icons */
+.clickable-icon {
+  color: var(--icon-color);
+  border-radius: var(--pc-radius);
+  transition: none;
+}
+
+.clickable-icon:hover {
+  color: var(--icon-color-hover);
+  background: rgba(var(--pc-tint), 0.5);
+}
+
+.clickable-icon.is-active {
+  color: var(--icon-color-active);
+}
+
+/* =====================================================================
+ * 07  Menus, modals, settings, prompts
+ *
+ * These are the only surfaces that blur. They are small, and they do not
+ * contain high-frequency repaint targets, so the filter result stays
+ * cached in practice.
+ * ===================================================================== */
+
+body {
+  --pc-popup-bg: rgba(255, 255, 255, 0.72);
+  --pc-popup-blur: 24px;
+}
+
+.theme-dark {
+  --pc-popup-bg: rgba(30, 34, 40, 0.72);
+}
+
+.menu,
+.modal,
+.prompt,
+.suggestion-container,
+.suggestion-popover,
+.popover.hover-popover {
+  background-color: var(--pc-popup-bg);
+  -webkit-backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
+  backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: var(--shadow-l);
+  animation: none;
+}
+
+.modal-bg {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.menu-item {
+  border-radius: var(--pc-radius);
+}
+
+.menu-item:hover,
+.menu-item.selected {
+  background: var(--pc-blue);
+  color: var(--pc-on-color);
+}
+
+.menu-item:hover .menu-item-icon,
+.menu-item.selected .menu-item-icon {
+  color: var(--pc-on-color);
+}
+
+.suggestion-item.is-selected {
+  background: var(--pc-blue);
+  color: var(--pc-on-color);
+  border-radius: var(--pc-radius);
+}
+
+/* Settings */
+.modal.mod-settings .vertical-tab-header,
+.modal.mod-settings .vertical-tab-content-container,
+.modal.mod-settings .vertical-tab-content,
+.modal.mod-settings .modal-content {
+  background-color: transparent;
+}
+
+.modal.mod-settings .vertical-tab-header {
+  border-right: none;
+  background-image: var(--pc-rule-v);
+  background-size: 1px 100%;
+  background-position: top right;
+  background-repeat: no-repeat;
+}
+
+.setting-item {
+  border-top: none;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+.setting-item-heading,
+.setting-item-heading + .setting-item,
+.vertical-tab-content > .setting-item:first-child {
+  background-image: none;
+  border-top: none;
+}
+
+.vertical-tab-nav-item {
+  border-radius: var(--pc-radius);
+  color: var(--pc-ink-muted);
+}
+
+.vertical-tab-nav-item:hover {
+  background: rgba(var(--pc-tint), 0.5);
+  color: var(--pc-ink);
+}
+
+.vertical-tab-nav-item.is-active {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image: var(--pc-bloom);
+  color: var(--pc-on-color);
+}
+
+.setting-item-name {
+  color: var(--pc-ink);
+}
+
+.setting-item-description {
+  color: var(--pc-ink-muted);
+}
+
+/* =====================================================================
+ * 08  Editor typography
+ * ===================================================================== */
+
+body {
+  --font-text-size: 16px;
+  --line-height-normal: 1.7;
+  --line-height-tight: 1.35;
+  --file-line-width: 46rem;
+  --file-margins: 32px 48px;
+
+  --h1-size: 1.9em;
+  --h2-size: 1.55em;
+  --h3-size: 1.3em;
+  --h4-size: 1.12em;
+  --h5-size: 1em;
+  --h6-size: 0.94em;
+
+  --h1-weight: 700;
+  --h2-weight: 700;
+  --h3-weight: 650;
+  --h4-weight: 600;
+  --h5-weight: 600;
+  --h6-weight: 600;
+
+  --h1-color: var(--pc-ink);
+  --h2-color: var(--pc-ink);
+  --h3-color: var(--pc-ink);
+  --h4-color: var(--pc-ink);
+  --h5-color: var(--pc-ink-muted);
+  --h6-color: var(--pc-ink-muted);
+
+  --h1-line-height: 1.3;
+  --h2-line-height: 1.3;
+  --h3-line-height: 1.35;
+
+  --p-spacing: 1em;
+  --heading-spacing: 1.6em;
+
+  --bold-weight: 650;
+  --bold-color: var(--pc-ink);
+  --italic-color: inherit;
+  --link-color: var(--color-accent);
+  --link-color-hover: var(--pc-blue-hi);
+  --link-decoration: none;
+  --link-decoration-hover: underline;
+  --link-unresolved-color: var(--pc-ink-faint);
+  --link-unresolved-opacity: 1;
+  --link-external-color: var(--color-accent);
+}
+
+.inline-title {
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  line-height: var(--h1-line-height);
+  color: var(--pc-ink);
+  margin-bottom: 0.5em;
+}
+
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-rendered h1,
+.markdown-rendered h2 {
+  letter-spacing: -0.005em;
+}
+
+/* A heading rule that matches the theme's separator language */
+.markdown-rendered h1,
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  padding-bottom: 0.24em;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+hr,
+.markdown-rendered hr {
+  border: none;
+  height: 1px;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  margin: 2em 0;
+}
+
+/* Properties / frontmatter panel */
+.metadata-container {
+  background: rgba(var(--pc-tint), 0.35);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  padding: 12px 14px;
+}
+
+.metadata-property-key,
+.metadata-property-key-input {
+  color: var(--pc-ink-muted);
+}
+
+/* =====================================================================
+ * 09  Code, tables, callouts, quotes
+ * ===================================================================== */
+
+body {
+  --code-background: rgba(var(--pc-tint), 0.5);
+  --code-normal: var(--pc-ink);
+  --code-radius: var(--pc-radius);
+  --code-size: 0.88em;
+  --code-white-space: pre-wrap;
+
+  --code-comment: var(--pc-ink-faint);
+  --code-function: hsl(280, 55%, 52%);
+  --code-important: hsl(14, 82%, 52%);
+  --code-keyword: hsl(209, 78%, 46%);
+  --code-operator: hsl(213, 20%, 40%);
+  --code-property: hsl(190, 60%, 38%);
+  --code-punctuation: var(--pc-ink-muted);
+  --code-string: hsl(140, 45%, 38%);
+  --code-tag: hsl(209, 78%, 46%);
+  --code-value: hsl(24, 72%, 48%);
+
+  --table-border-color: var(--pc-line);
+  --table-border-width: 1px;
+  --table-header-background: rgba(var(--pc-tint), 0.4);
+  --table-row-alt-background: rgba(var(--pc-tint), 0.22);
+  --table-row-background-hover: rgba(var(--pc-tint), 0.5);
+  --table-radius: var(--pc-radius);
+
+  --blockquote-border-color: var(--color-accent);
+  --blockquote-border-thickness: 2px;
+  --blockquote-color: var(--pc-ink-muted);
+  --blockquote-background-color: transparent;
+
+  --callout-radius: var(--pc-radius-lg);
+  --callout-border-width: 0px;
+  --callout-border-opacity: 0;
+  --callout-padding: 12px 16px;
+  --callout-blend-mode: normal;
+  --callout-title-size: 1em;
+}
+
+.theme-dark {
+  --code-function: hsl(280, 60%, 74%);
+  --code-important: hsl(14, 85%, 66%);
+  --code-keyword: hsl(209, 80%, 68%);
+  --code-operator: hsl(213, 16%, 68%);
+  --code-property: hsl(190, 60%, 62%);
+  --code-string: hsl(140, 45%, 62%);
+  --code-tag: hsl(209, 80%, 68%);
+  --code-value: hsl(24, 75%, 66%);
+}
+
+.markdown-rendered pre,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock,
+.cm-s-obsidian .HyperMD-codeblock {
+  background: var(--code-background);
+  border-radius: var(--code-radius);
+  box-shadow: var(--pc-outline);
+}
+
+.markdown-rendered code,
+.cm-inline-code {
+  background: var(--code-background);
+  border-radius: var(--radius-s);
+  padding: 0.12em 0.35em;
+}
+
+.markdown-rendered table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--table-radius);
+  overflow: hidden;
+  box-shadow: var(--pc-outline);
+}
+
+.markdown-rendered th {
+  background: var(--table-header-background);
+  color: var(--pc-ink);
+  font-weight: 600;
+}
+
+.callout {
+  box-shadow: var(--pc-outline);
+  background: color-mix(
+    in srgb,
+    rgb(var(--callout-color)) 10%,
+    rgba(var(--pc-tint), 0.4)
+  );
+}
+
+.callout-title {
+  color: rgb(var(--callout-color));
+  font-weight: 600;
+}
+
+blockquote,
+.markdown-rendered blockquote {
+  border-left: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  padding-left: 1em;
+  font-style: normal;
+}
+
+/* Lists and tasks */
+body {
+  --list-indent: 1.6em;
+  --list-spacing: 0.1em;
+  --checkbox-color: var(--color-accent);
+  --checkbox-color-hover: var(--pc-blue-hi);
+  --checkbox-border-color: var(--pc-line-strong);
+  --checkbox-marker-color: var(--pc-on-color);
+  --checklist-done-color: var(--pc-ink-faint);
+  --checklist-done-decoration: line-through;
+}
+
+.markdown-rendered ul > li::marker,
+.markdown-rendered ol > li::marker {
+  color: var(--pc-ink-faint);
+}
+
+/* =====================================================================
+ * 10  Tags, links, embeds
+ * ===================================================================== */
+
+body {
+  --tag-background: rgba(var(--pc-tint), 0.5);
+  --tag-background-hover: var(--pc-blue);
+  --tag-color: var(--color-accent);
+  --tag-color-hover: var(--pc-on-color);
+  --tag-radius: 999px;
+  --tag-border-width: 0px;
+  --tag-padding-x: 0.7em;
+  --tag-padding-y: 0.18em;
+  --tag-weight: 500;
+
+  --embed-block-shadow-hover: none;
+  --embed-padding: 0 0 0 1em;
+  --embed-border-left: 2px solid var(--pc-line-strong);
+}
+
+.tag,
+a.tag {
+  border: none;
+  box-shadow: var(--pc-outline);
+  transition: none;
+}
+
+.tag:hover,
+a.tag:hover {
+  background: var(--tag-background-hover);
+  color: var(--tag-color-hover);
+  box-shadow: none;
+}
+
+.markdown-embed,
+.markdown-embed-content {
+  background: transparent;
+}
+
+.internal-embed .markdown-embed {
+  border-left: var(--embed-border-left);
+  border-radius: 0;
+}
+
+/* =====================================================================
+ * 11  Scrollbars, tooltips, graph, canvas, mobile
+ * ===================================================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-active-thumb-bg);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Tooltip: blue glass, white text, no arrow.
+ * The arrow is deliberately absent — a translucent bubble and a
+ * translucent arrow sit over different backdrops, so they composite to
+ * visibly different colors and the joint always shows. */
+body {
+  --pc-tooltip-bg: hsla(209, 88%, 58%, 0.55);
+  --pc-tooltip-blur: 20px;
+}
+
+.tooltip {
+  background: var(--pc-tooltip-bg);
+  color: var(--pc-on-color);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  padding: 5px 11px;
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(var(--pc-tooltip-blur)) saturate(180%);
+  backdrop-filter: blur(var(--pc-tooltip-blur)) saturate(180%);
+}
+
+.tooltip .tooltip-arrow {
+  display: none;
+}
+
+/* Graph */
+body {
+  --graph-line: var(--pc-line-strong);
+  --graph-node: var(--pc-ink-muted);
+  --graph-node-focused: var(--color-accent);
+  --graph-node-tag: var(--pc-orange);
+  --graph-node-attachment: hsl(190, 55%, 50%);
+  --graph-node-unresolved: var(--pc-ink-faint);
+}
+
+/* Canvas */
+body {
+  --canvas-background: transparent;
+  --canvas-card-label-color: var(--pc-ink-muted);
+  --canvas-dot-pattern: var(--pc-line);
+}
+
+.canvas-node-container {
+  border-radius: var(--pc-radius-lg);
+  box-shadow: var(--pc-outline);
+}
+
+.canvas-controls .canvas-control-item,
+.canvas-card-menu {
+  background: var(--pc-popup-bg);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius);
+  box-shadow: none;
+}
+
+/* Mobile: no window translucency, so surfaces need a floor. */
+body.is-mobile {
+  --pc-veil: 1;
+  --pc-sidebar-veil: 1;
+}
+
+body.is-mobile .app-container::before {
+  background: var(--pc-solid);
+}
+
+body.is-mobile .workspace-split.mod-left-split,
+body.is-mobile .workspace-split.mod-right-split,
+body.is-mobile .workspace-drawer {
+  background: var(--pc-solid-alt);
+}
+
+body.is-mobile .mobile-navbar,
+body.is-mobile .mobile-toolbar {
+  background: var(--pc-solid);
+  border: none;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+/* Search results */
+.search-result-file-title {
+  border-radius: var(--pc-radius);
+  color: var(--pc-ink);
+}
+
+.search-result-file-match {
+  border-radius: var(--pc-radius);
+}
+
+.search-result-file-match:hover {
+  background: rgba(var(--pc-tint), 0.5);
+}
+
+.search-result-file-matched-text {
+  background: var(--text-highlight-bg);
+  border-radius: 3px;
+}
+
+/* Notices */
+.notice {
+  background: var(--pc-popup-bg);
+  -webkit-backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
+  backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
+  color: var(--text-normal);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: var(--shadow-l);
+}
+
+/* =====================================================================
+ * 12  Notebook Navigator
+ *
+ * The plugin exposes --nn-theme-* hooks and paints selection/hover on
+ * ::before / ::after overlays rather than on the row itself, so both the
+ * hooks and the overlay colors are set here.
+ * ===================================================================== */
+
+body {
+  --nn-theme-navitem-border-radius: var(--pc-radius);
+  --nn-theme-file-border-radius: var(--pc-radius);
+  --nn-theme-navitem-border-width: 0px;
+  --nn-theme-file-border-width: 0px;
+
+  --nn-theme-navitem-hover-bg: var(--pc-orange);
+  --nn-theme-navitem-hover-border-color: transparent;
+
+  --nn-theme-navitem-selected-bg: var(--pc-blue);
+  --nn-theme-navitem-selected-inactive-bg: var(--pc-blue);
+  --nn-theme-navitem-selected-name-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-inactive-name-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-icon-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-inactive-icon-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-chevron-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-inactive-chevron-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-count-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-inactive-count-color: var(--pc-on-color);
+  --nn-theme-navitem-selected-count-bg: rgba(255, 255, 255, 0.22);
+  --nn-theme-navitem-selected-inactive-count-bg: rgba(255, 255, 255, 0.22);
+  --nn-theme-navitem-selected-border-color: transparent;
+  --nn-theme-navitem-selected-inactive-border-color: transparent;
+
+  --nn-theme-file-selected-bg: var(--pc-blue);
+  --nn-theme-file-selected-inactive-bg: var(--pc-blue);
+  --nn-theme-file-selected-name-color: var(--pc-on-color);
+  --nn-theme-file-selected-inactive-name-color: var(--pc-on-color);
+  --nn-theme-file-selected-preview-color: rgba(255, 255, 255, 0.85);
+  --nn-theme-file-selected-inactive-preview-color: rgba(255, 255, 255, 0.85);
+  --nn-theme-file-selected-date-color: rgba(255, 255, 255, 0.8);
+  --nn-theme-file-selected-inactive-date-color: rgba(255, 255, 255, 0.8);
+  --nn-theme-file-selected-parent-color: rgba(255, 255, 255, 0.8);
+  --nn-theme-file-selected-word-count-color: rgba(255, 255, 255, 0.8);
+  --nn-theme-file-selected-border-color: transparent;
+  --nn-theme-file-selected-inactive-border-color: transparent;
+  --nn-theme-file-selected-tag-bg: rgba(255, 255, 255, 0.22);
+  --nn-theme-file-selected-tag-color: var(--pc-on-color);
+  --nn-theme-file-selected-tag-border-color: transparent;
+  --nn-theme-file-selected-property-bg: rgba(255, 255, 255, 0.22);
+  --nn-theme-file-selected-property-color: var(--pc-on-color);
+  --nn-theme-file-selected-property-border-color: transparent;
+}
+
+.nn-navitem.nn-selected::after {
+  background-color: var(--pc-blue);
+  box-shadow: none;
+}
+
+.nn-file.nn-selected .nn-file-content::before {
+  background-color: var(--pc-blue);
+  box-shadow: none;
+}
+
+.nn-desktop .nn-navitem:not([data-search-match]):hover::after {
+  background-color: var(--pc-orange);
+}
+
+.nn-desktop .nn-navitem:hover .nn-navitem-name,
+.nn-desktop .nn-navitem:hover .nn-navitem-icon,
+.nn-desktop .nn-navitem:hover .nn-navitem-chevron,
+.nn-desktop .nn-navitem:hover .nn-navitem-count {
+  color: var(--pc-on-color);
+}
+
+/* Row hover is painted on the content box, not an overlay: an overlay
+ * would need the text lifted above it, and giving the row's children
+ * position:relative re-parents the absolutely positioned quick-action
+ * buttons, which knocks them out of place. */
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-content {
+  background-color: var(--pc-orange);
+  border-radius: var(--nn-theme-file-border-radius);
+}
+
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-name,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-preview,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-date,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-parent-folder,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-name-suffix {
+  color: var(--pc-on-color);
+}
+
+.nn-navitem-content,
+.nn-file {
+  background: transparent;
+}
+
+/* Quick actions read white only on the colored rows */
+.nn-desktop .nn-file:hover .nn-quick-actions-panel,
+.nn-file.nn-selected .nn-quick-actions-panel {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.nn-desktop .nn-file:hover .nn-quick-action-item,
+.nn-file.nn-selected .nn-quick-action-item {
+  color: var(--pc-on-color);
+}
+
+.nn-desktop .nn-file:hover .nn-quick-action-separator,
+.nn-file.nn-selected .nn-quick-action-separator {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* NN pins 34px minimum width on header buttons; six of them overflow a
+ * narrow pane and overlap. Let them compress instead. */
+.nn-pane-header .nn-header-actions button.nn-icon-button {
+  min-width: 24px;
+  padding: 0 3px;
+  flex: 0 0 auto;
+}
+
+.nn-pane-header .nn-header-actions {
+  gap: 1px;
+  flex-shrink: 0;
+}
+
+.nn-pane-header {
+  border: none;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+.nn-split-container > .nn-list-pane {
+  border: none;
+}
