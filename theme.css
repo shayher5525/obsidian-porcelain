@@ -2325,3 +2325,25 @@ button.clickable-icon:hover,
 .markdown-rendered .callout .callout-title-inner {
   font-weight: 700;
 }
+
+/* 属性名去框：属性名是 input 元素，被通用 input 规则套上了半透明底 +
+ * 1px 描边。它在阅读状态下更像标签而不是输入框，聚焦时才需要边界。 */
+.metadata-property-key,
+.metadata-property-key input,
+.metadata-property-key-input,
+.metadata-property-key .metadata-property-key-input {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+}
+
+.metadata-property-key-input:hover {
+  background: rgba(var(--pc-tint), 0.4);
+  box-shadow: none;
+}
+
+.metadata-property-key-input:focus {
+  background: rgba(var(--pc-tint), 0.5);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
