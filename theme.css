@@ -3079,3 +3079,33 @@ body {
 .modal-container .modal.mod-settings {
   background-color: var(--pc-solid);
 }
+
+/* =====================================================================
+ * 背景模糊：从「光晕」调回「毛玻璃」
+ *
+ * 现在这个观感是 bloom，不是高斯模糊，原因有三条，一起作用：
+ *
+ * 1. 半径太大。16px 把文字彻底抹平，只剩下大块亮斑向外扩散。真正的
+ *    毛玻璃仍然保留结构——能看出「那里有一行字」，只是读不出内容。
+ * 2. 白纱盖在模糊结果之上。它抬高整体亮度、压缩暗部，亮区因此吃掉暗
+ *    区，正是发光的成因。
+ * 3. 饱和度没有压。界面里那些高饱和的蓝色块（选中行、标签页）被糊开
+ *    后，色相不变、面积暴涨，就成了彩色光晕。
+ *
+ * 对应处理：半径减半、白纱几乎去掉、饱和度压到 70%。
+ * ===================================================================== */
+
+body {
+  --pc-modal-backdrop-blur: 8px;
+  --pc-modal-veil: rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark {
+  --pc-modal-veil: rgba(0, 0, 0, 0.2);
+}
+
+.modal-bg {
+  background: var(--pc-modal-veil);
+  -webkit-backdrop-filter: blur(var(--pc-modal-backdrop-blur)) saturate(70%);
+  backdrop-filter: blur(var(--pc-modal-backdrop-blur)) saturate(70%);
+}
