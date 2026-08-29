@@ -2555,3 +2555,36 @@ body .metadata-add-button:hover * {
 .metadata-property[data-property-key='aliases'] .multi-select-pill-remove-button svg {
   color: var(--pc-lemon-ink);
 }
+
+/* 通用 pill 换浅草绿、去描边（tags 红、aliases 黄的专属配色不受影响） */
+body {
+  --pc-grass: hsl(96, 62%, 78%);
+  --pc-grass-ink: hsl(96, 55%, 22%);
+}
+
+.theme-dark {
+  --pc-grass: hsla(96, 45%, 55%, 0.3);
+  --pc-grass-ink: hsl(96, 55%, 78%);
+}
+
+.metadata-property .multi-select-pill {
+  background: var(--pc-grass);
+  color: var(--pc-grass-ink);
+  box-shadow: none;
+  border: none;
+}
+
+.metadata-property .multi-select-pill-content,
+.metadata-property .multi-select-pill span {
+  color: inherit;
+}
+
+.metadata-property[data-property-key='tags'] .multi-select-pill {
+  background: var(--pc-red);
+  color: var(--pc-on-color);
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill {
+  background: var(--pc-lemon);
+  color: var(--pc-lemon-ink);
+}
