@@ -1923,3 +1923,63 @@ body {
   border-bottom-left-radius: var(--callout-radius);
   border-bottom-right-radius: var(--callout-radius);
 }
+
+/* =====================================================================
+ * Live-preview code blocks
+ *
+ * In source mode `.HyperMD-codeblock` is a *per-line* class, so the
+ * radius, outline, and padding meant for the block were being drawn
+ * around every single line. The block has to be assembled from its
+ * lines: side borders on all of them, top/bottom borders and the
+ * corner radii only on the first and last.
+ * ===================================================================== */
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  background: var(--code-background);
+  border-radius: 0;
+  box-shadow: none;
+  border-left: 1px solid var(--pc-line);
+  border-right: 1px solid var(--pc-line);
+  border-top: none;
+  border-bottom: none;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-begin {
+  border-top: 1px solid var(--pc-line);
+  border-top-left-radius: var(--code-radius);
+  border-top-right-radius: var(--code-radius);
+  padding-top: 0.35em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-end {
+  border-bottom: 1px solid var(--pc-line);
+  border-bottom-left-radius: var(--code-radius);
+  border-bottom-right-radius: var(--code-radius);
+  padding-bottom: 0.35em;
+}
+
+/* Inline code only — never the code element inside a fenced block, which
+ * would double the background and add padding mid-line. */
+.markdown-rendered code:not(pre code),
+.cm-inline-code:not(.cm-formatting) {
+  background: var(--code-background);
+  border-radius: var(--radius-s);
+  padding: 0.12em 0.35em;
+}
+
+.markdown-rendered pre > code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Reading view keeps a single box around the whole block */
+.markdown-rendered pre {
+  padding: 0.8em 1em;
+  border-radius: var(--code-radius);
+  box-shadow: var(--pc-outline);
+  background: var(--code-background);
+}
