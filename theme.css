@@ -2298,3 +2298,9 @@ button.clickable-icon:hover,
   box-shadow: none;
   border: none;
 }
+
+/* 路径栏与正文之间不画线：正文区顶边那条渐隐线紧贴在页头下方，
+ * 和标签栏底部那条只隔一个页头的高度，两条平行线太密。 */
+.workspace-leaf-content[data-type='markdown'] > .view-content {
+  background-image: none;
+}
