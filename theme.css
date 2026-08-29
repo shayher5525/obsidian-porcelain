@@ -2751,3 +2751,109 @@ body:not(.is-focused) .workspace-tab-header.is-active .workspace-tab-header-inne
 .modal.mod-settings .modal-content {
   background-color: transparent;
 }
+
+/* =====================================================================
+ * Command palette and quick switcher
+ *
+ * Heavier glass than the menus: this panel covers the note, so the
+ * backdrop needs to wash out rather than compete with the list. The
+ * selected row is a soft accent tint with normal text — a solid accent
+ * fill here fights the panel and makes the list read as a form.
+ * ===================================================================== */
+
+body {
+  --pc-prompt-bg: rgba(255, 255, 255, 0.86);
+  --pc-prompt-blur: 40px;
+  --pc-prompt-selected: hsla(209, 88%, 54%, 0.14);
+}
+
+.theme-dark {
+  --pc-prompt-bg: rgba(28, 32, 38, 0.88);
+  --pc-prompt-selected: hsla(209, 88%, 60%, 0.22);
+}
+
+.prompt,
+.suggestion-container,
+.suggestion-popover {
+  background-color: var(--pc-prompt-bg);
+  -webkit-backdrop-filter: blur(var(--pc-prompt-blur)) saturate(160%);
+  backdrop-filter: blur(var(--pc-prompt-blur)) saturate(160%);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: var(--shadow-l);
+}
+
+/* Search field: no box of its own, just a rule under it */
+.prompt-input-container,
+.prompt-input {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.prompt-input:focus,
+.prompt-input:hover {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.prompt-input-container {
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+.prompt-input::placeholder {
+  color: var(--pc-ink-faint);
+}
+
+/* Rows */
+.suggestion-item,
+.prompt .suggestion-item {
+  border-radius: var(--pc-radius);
+  padding: 0.45em 0.7em;
+  color: var(--text-normal);
+}
+
+.suggestion-item.is-selected,
+.prompt .suggestion-item.is-selected {
+  background: var(--pc-prompt-selected);
+  color: var(--text-normal);
+}
+
+.suggestion-item.is-selected .suggestion-title,
+.suggestion-item.is-selected .suggestion-content {
+  color: var(--text-normal);
+}
+
+.suggestion-note,
+.suggestion-aux,
+.suggestion-flair {
+  color: var(--pc-ink-faint);
+}
+
+/* Footer hints */
+.prompt-instructions {
+  color: var(--pc-ink-faint);
+  border-top: none;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+.prompt-instruction-command,
+.suggestion-hotkey,
+kbd {
+  background: rgba(var(--pc-tint), 0.6);
+  color: var(--pc-ink-muted);
+  border: none;
+  box-shadow: var(--pc-outline);
+  border-radius: var(--radius-s);
+  padding: 0.1em 0.4em;
+  font-family: var(--font-interface-theme);
+  font-size: 0.85em;
+}
