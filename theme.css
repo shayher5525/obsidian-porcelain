@@ -2402,3 +2402,55 @@ button.clickable-icon:hover,
   text-overflow: clip;
   line-height: inherit;
 }
+
+/* =====================================================================
+ * 别名属性：柠檬黄底黑字
+ *
+ * 和标签用同一套 pill 结构，只是换色。底色只画在外层，内层保持透明、
+ * overflow: visible —— 内层带 overflow: hidden，一旦给它圆角就会裁掉
+ * 自己的字形。
+ * ===================================================================== */
+
+body {
+  --pc-lemon: hsl(52, 96%, 62%);
+  --pc-lemon-ink: hsl(0, 0%, 12%);
+}
+
+.theme-dark {
+  --pc-lemon: hsl(52, 88%, 58%);
+  --pc-lemon-ink: hsl(0, 0%, 10%);
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill {
+  background: var(--pc-lemon);
+  color: var(--pc-lemon-ink);
+  border: none;
+  box-shadow: none;
+  border-radius: var(--pc-radius);
+  padding: 0.1em 0.5em;
+  line-height: 1.5;
+  overflow: visible;
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill-content,
+.metadata-property[data-property-key='aliases'] .multi-select-pill .multi-select-pill-content,
+.metadata-property[data-property-key='aliases'] .multi-select-pill a,
+.metadata-property[data-property-key='aliases'] .multi-select-pill span {
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: inherit;
+  color: var(--pc-lemon-ink);
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill-remove-button,
+.metadata-property[data-property-key='aliases'] .multi-select-pill-remove-button svg {
+  color: var(--pc-lemon-ink);
+  opacity: 0.6;
+}
+
+.metadata-property[data-property-key='aliases'] .multi-select-pill-remove-button:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.12);
+}
