@@ -2318,3 +2318,10 @@ button.clickable-icon:hover,
 .workspace-sidedock-vault-profile::before {
   inset: -8px 0;
 }
+
+/* Callout 标题默认加粗 */
+.callout .callout-title,
+.callout .callout-title-inner,
+.markdown-rendered .callout .callout-title-inner {
+  font-weight: 700;
+}
