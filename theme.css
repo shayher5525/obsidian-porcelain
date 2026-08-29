@@ -1891,3 +1891,20 @@ blockquote,
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1px;
 }
+
+/* NN keeps a row selected when the pane loses focus, but switches every
+ * selected-* token to its selected-inactive-* twin. Those were unset, so
+ * the pill fell back to a transparent fill the moment focus moved to the
+ * editor. NN's own pill rules carry five classes of specificity, so the
+ * fix has to go through the tokens, not a plain background rule. */
+body {
+  --nn-theme-file-selected-inactive-tag-bg: rgba(255, 255, 255, 0.24);
+  --nn-theme-file-selected-inactive-tag-color: var(--pc-on-color);
+  --nn-theme-file-selected-inactive-tag-border-color: transparent;
+  --nn-theme-file-selected-inactive-property-bg: rgba(255, 255, 255, 0.24);
+  --nn-theme-file-selected-inactive-property-color: var(--pc-on-color);
+  --nn-theme-file-selected-inactive-property-border-color: transparent;
+
+  --nn-theme-navitem-selected-inactive-count-bg: rgba(255, 255, 255, 0.24);
+  --nn-theme-navitem-selected-inactive-count-color: var(--pc-on-color);
+}
