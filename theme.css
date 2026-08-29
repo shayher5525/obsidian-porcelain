@@ -2147,3 +2147,33 @@ body {
 .internal-link.is-unresolved {
   color: var(--pc-red-faint);
 }
+
+/* =====================================================================
+ * Highlights as pink pills
+ *
+ * `==text==` only. CSS cannot match a text pattern such as quoted
+ * content — it selects elements, and quotation marks produce no element.
+ * A regex-highlighting plugin can wrap matches; the pill styling below
+ * is reused for those via .pc-pill.
+ * ===================================================================== */
+
+body {
+  --pc-pink: hsl(336, 80%, 92%);
+  --pc-pink-ink: hsl(336, 62%, 38%);
+}
+
+.theme-dark {
+  --pc-pink: hsla(336, 60%, 62%, 0.22);
+  --pc-pink-ink: hsl(336, 70%, 78%);
+}
+
+.markdown-rendered mark,
+.cm-highlight,
+.pc-pill {
+  background: var(--pc-pink);
+  color: var(--pc-pink-ink);
+  border-radius: var(--pc-radius);
+  padding: 0.08em 0.4em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
