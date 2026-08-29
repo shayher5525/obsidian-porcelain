@@ -1983,3 +1983,95 @@ body {
   box-shadow: var(--pc-outline);
   background: var(--code-background);
 }
+
+/* =====================================================================
+ * Tables
+ *
+ * Blue header band, horizontal rules only. Vertical grid lines and an
+ * outer frame make a dense CJK table read as a spreadsheet; dropping
+ * them lets the columns breathe and puts the emphasis on the header.
+ * ===================================================================== */
+
+body {
+  --table-width: 100%;
+  --table-header-background: var(--pc-blue);
+  --table-header-background-hover: var(--pc-blue);
+  --table-header-border-color: transparent;
+  --table-header-color: var(--pc-on-color);
+  --table-header-weight: 600;
+  --table-line-height: 1.6;
+  --table-text-size: 0.95em;
+  --table-column-max-width: none;
+  --table-border-width: 0px;
+  --table-border-color: transparent;
+  --table-row-background-hover: rgba(var(--pc-tint), 0.5);
+  --table-row-alt-background: transparent;
+  --table-cell-padding: 0.5em 0.8em;
+  --table-selection: hsla(209, 88%, 54%, 0.14);
+}
+
+.markdown-rendered table,
+.markdown-source-view.mod-cm6 table {
+  width: var(--table-width);
+  border-collapse: collapse;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  font-size: var(--table-text-size);
+  line-height: var(--table-line-height);
+}
+
+.markdown-rendered thead,
+.markdown-source-view.mod-cm6 thead {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image:
+    radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+}
+
+.markdown-rendered th,
+.markdown-source-view.mod-cm6 th {
+  background: transparent;
+  color: var(--table-header-color);
+  font-weight: var(--table-header-weight);
+  text-align: start;
+  border: none;
+  padding: var(--table-cell-padding);
+}
+
+.markdown-rendered td,
+.markdown-source-view.mod-cm6 td {
+  border: none;
+  border-bottom: 1px solid var(--pc-line);
+  padding: var(--table-cell-padding);
+  vertical-align: top;
+}
+
+.markdown-rendered tbody tr:last-child td {
+  border-bottom: 1px solid var(--pc-line);
+}
+
+.markdown-rendered tbody tr:hover td {
+  background: var(--table-row-background-hover);
+}
+
+/* Numbers line up column-wise */
+.markdown-rendered td,
+.markdown-rendered th {
+  font-variant-numeric: tabular-nums;
+}
