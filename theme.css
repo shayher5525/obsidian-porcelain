@@ -412,23 +412,6 @@ body {
   --indentation-guide-color-active: transparent;
   --indentation-guide-width: 0px;
 
-  /* Shared bloom recipe, parameterised by --pc-fill at the use site */
-  --pc-bloom:
-    radial-gradient(
-      130% 200% at 92% 45%,
-      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
-      transparent 100%
-    ),
-    radial-gradient(
-      70% 150% at 58% 8%,
-      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
-      transparent 100%
-    ),
-    radial-gradient(
-      110% 190% at 12% 78%,
-      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
-      transparent 100%
-    );
 }
 
 .tree-item-self,
@@ -468,7 +451,21 @@ body {
 .tag-pane-tag:hover {
   --pc-fill: var(--pc-orange);
   background-color: var(--pc-fill);
-  background-image: var(--pc-bloom);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   border-color: transparent;
   color: var(--pc-on-color);
 }
@@ -480,7 +477,21 @@ body {
 .nav-folder-title.is-active {
   --pc-fill: var(--pc-blue);
   background-color: var(--pc-fill);
-  background-image: var(--pc-bloom);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   border-color: transparent;
   color: var(--pc-on-color);
 }
@@ -651,7 +662,21 @@ input[type='submit'],
 .metadata-add-button {
   --pc-fill: var(--pc-blue);
   background-color: var(--pc-fill);
-  background-image: var(--pc-bloom);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   color: var(--pc-on-color);
   border: none;
   box-shadow: none;
@@ -685,7 +710,21 @@ button.mod-warning,
 .checkbox-container.is-enabled {
   --pc-fill: var(--pc-blue);
   background-color: var(--pc-fill);
-  background-image: var(--pc-bloom);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   border: none;
   box-shadow: none;
 }
@@ -843,7 +882,21 @@ body {
 .vertical-tab-nav-item.is-active {
   --pc-fill: var(--pc-blue);
   background-color: var(--pc-fill);
-  background-image: var(--pc-bloom);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   color: var(--pc-on-color);
 }
 
