@@ -2304,3 +2304,17 @@ button.clickable-icon:hover,
 .workspace-leaf-content[data-type='markdown'] > .view-content {
   background-image: none;
 }
+
+/* 底栏右侧溢出：之前靠 inset: -8px 抵消切换器自身的左右外边距来做满宽，
+ * 但那假设了外边距两侧都恰好 8px、且父容器边界就是侧边栏边界。实测右侧
+ * 多出一截，盖到了编辑区。
+ * 改成外边距归零、用内边距把内容推进来，底栏水平方向就贴着父容器边界，
+ * 不再依赖任何抵消计算。 */
+.workspace-sidedock-vault-profile {
+  margin: 0;
+  padding: 8px 16px;
+}
+
+.workspace-sidedock-vault-profile::before {
+  inset: -8px 0;
+}
