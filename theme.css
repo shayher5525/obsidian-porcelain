@@ -2588,3 +2588,34 @@ body {
   background: var(--pc-lemon);
   color: var(--pc-lemon-ink);
 }
+
+/* 属性值输入框去框：数字、文本、日期的值都是 input，被通用 input 规则
+ * 套上了半透明底 + 1px 描边。属性面板里它们应该读作值本身，聚焦时
+ * 才需要边界。 */
+.metadata-property-value input,
+.metadata-property-value .metadata-input,
+.metadata-property-value .metadata-input-longtext,
+.metadata-property-value input[type='text'],
+.metadata-property-value input[type='number'],
+.metadata-property-value input[type='date'],
+.metadata-property-value input[type='datetime-local'],
+.metadata-input-number,
+.metadata-input-text {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.metadata-property-value input:hover,
+.metadata-input-number:hover,
+.metadata-input-text:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.metadata-property-value input:focus,
+.metadata-input-number:focus,
+.metadata-input-text:focus {
+  background: rgba(var(--pc-tint), 0.5);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
