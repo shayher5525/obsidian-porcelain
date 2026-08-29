@@ -1208,7 +1208,7 @@ body {
 .tooltip {
   background: var(--pc-tooltip-bg);
   color: var(--pc-on-color);
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  border: none;
   border-radius: 10px;
   padding: 5px 11px;
   box-shadow: none;
