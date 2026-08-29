@@ -2083,3 +2083,11 @@ body {
 .markdown-source-view.mod-cm6 th {
   text-align: center;
 }
+
+/* 强制所有表头居中，压过 Obsidian 为列对齐语法写下的行内 style */
+.markdown-rendered th,
+.markdown-source-view.mod-cm6 th,
+.markdown-rendered thead th,
+.markdown-source-view.mod-cm6 thead th {
+  text-align: center !important;
+}
