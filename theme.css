@@ -64,6 +64,11 @@
   --pc-blue-hi: hsl(209, 88%, 62%);
   --pc-blue-lo: hsl(209, 88%, 46%);
   --pc-orange: #ff5d24;
+  --pc-yellow: hsl(45, 95%, 55%);
+  --pc-yellow-text: hsl(0, 0%, 10%);
+  --pc-green: hsl(152, 55%, 42%);
+  --pc-blue-light: hsl(209, 88%, 70%);
+  --pc-pink-light: hsl(340, 82%, 78%);
   --pc-on-color: hsl(0, 0%, 100%);
 
   /* Glass. --pc-tint is an unwrapped rgb triplet so alpha can vary. */
@@ -96,6 +101,11 @@
   --pc-blue-hi: hsl(209, 88%, 64%);
   --pc-blue-lo: hsl(209, 88%, 48%);
   --pc-orange: #ff5d24;
+  --pc-yellow: hsl(45, 90%, 52%);
+  --pc-yellow-text: hsl(0, 0%, 10%);
+  --pc-green: hsl(152, 50%, 46%);
+  --pc-blue-light: hsl(209, 80%, 68%);
+  --pc-pink-light: hsl(340, 70%, 72%);
   --pc-on-color: hsl(0, 0%, 100%);
 
   --pc-tint: 22, 25, 31;
@@ -459,7 +469,7 @@ body {
   display: none;
 }
 
-/* Hover — orange */
+/* Hover — orange (files, level 3+ folders, and other tree items) */
 .tree-item-self.is-clickable:hover,
 .nav-file-title:hover,
 .nav-folder-title:hover,
@@ -514,11 +524,130 @@ body {
   color: var(--pc-on-color);
 }
 
-/* Selection wins over hover */
-.tree-item-self.is-active:hover,
-.nav-file-title.is-active:hover,
-.nav-folder-title.is-active:hover {
+/* Vault root (when shown) — orange gradient + white text */
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active),
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active {
   --pc-fill: var(--pc-orange);
+  color: var(--pc-on-color);
+}
+
+/* Level 1 folders — yellow gradient + black text
+   New Obsidian wraps the tree in .nav-folder.mod-root;
+   hidden vault root puts top-level .nav-folder directly under an anonymous div. */
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active),
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active),
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active {
+  --pc-fill: var(--pc-yellow);
+  color: var(--pc-yellow-text);
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
+  color: var(--pc-yellow-text);
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-yellow) 30%, white);
+}
+
+/* Level 2 folders — green gradient + white text */
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active),
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active),
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active {
+  --pc-fill: var(--pc-green);
+  color: var(--pc-on-color);
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
+  color: var(--pc-on-color);
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-green) 30%, white);
+}
+
+/* Level 3+ folders — orange gradient + white text */
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active),
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active),
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active {
+  --pc-fill: var(--pc-orange);
+  color: var(--pc-on-color);
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag {
+  color: var(--pc-on-color);
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-orange) 30%, white);
 }
 
 .tree-item-self.is-clickable:hover .tree-item-inner,
@@ -893,8 +1022,31 @@ body {
 }
 
 .vertical-tab-nav-item:hover {
-  background: rgba(var(--pc-tint), 0.5);
-  color: var(--pc-ink);
+  --pc-fill: var(--pc-green);
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+  color: var(--pc-on-color);
+}
+
+.vertical-tab-nav-item:hover .vertical-tab-nav-item-icon,
+.vertical-tab-nav-item:hover .svg-icon,
+.vertical-tab-nav-item:hover svg {
+  color: var(--pc-on-color);
+  stroke: var(--pc-on-color);
 }
 
 .vertical-tab-nav-item.is-active {
@@ -916,6 +1068,13 @@ body {
       transparent 100%
     );
   color: var(--pc-on-color);
+}
+
+.vertical-tab-nav-item.is-active .vertical-tab-nav-item-icon,
+.vertical-tab-nav-item.is-active .svg-icon,
+.vertical-tab-nav-item.is-active svg {
+  color: var(--pc-on-color);
+  stroke: var(--pc-on-color);
 }
 
 .setting-item-name {
@@ -1341,8 +1500,8 @@ body {
   --nn-theme-navitem-hover-bg: var(--pc-orange);
   --nn-theme-navitem-hover-border-color: transparent;
 
-  --nn-theme-navitem-selected-bg: var(--pc-blue);
-  --nn-theme-navitem-selected-inactive-bg: var(--pc-blue);
+  --nn-theme-navitem-selected-bg: var(--pc-orange);
+  --nn-theme-navitem-selected-inactive-bg: var(--nn-theme-navitem-selected-bg);
   --nn-theme-navitem-selected-name-color: var(--pc-on-color);
   --nn-theme-navitem-selected-inactive-name-color: var(--pc-on-color);
   --nn-theme-navitem-selected-icon-color: var(--pc-on-color);
@@ -1351,8 +1510,8 @@ body {
   --nn-theme-navitem-selected-inactive-chevron-color: var(--pc-on-color);
   --nn-theme-navitem-selected-count-color: var(--pc-on-color);
   --nn-theme-navitem-selected-inactive-count-color: var(--pc-on-color);
-  --nn-theme-navitem-selected-count-bg: rgba(255, 255, 255, 0.22);
-  --nn-theme-navitem-selected-inactive-count-bg: rgba(255, 255, 255, 0.22);
+  --nn-theme-navitem-selected-count-bg: color-mix(in srgb, var(--pc-orange) 30%, white);
+  --nn-theme-navitem-selected-inactive-count-bg: color-mix(in srgb, var(--pc-orange) 30%, white);
   --nn-theme-navitem-selected-border-color: transparent;
   --nn-theme-navitem-selected-inactive-border-color: transparent;
 
@@ -1376,9 +1535,146 @@ body {
   --nn-theme-file-selected-property-border-color: transparent;
 }
 
-.nn-navitem.nn-selected::after {
-  background-color: var(--pc-blue);
+.nn-desktop .nn-navitem.nn-selected::after {
+  --pc-fill: var(--nn-theme-navitem-selected-bg);
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   box-shadow: none;
+}
+
+/* Selected colors mirror hover colors per level */
+.nn-desktop .nn-navitem.nn-folder[data-level="3"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="4"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="5"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="6"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="7"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="8"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="9"].nn-selected::after,
+.nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-selected::after {
+  --pc-fill: var(--pc-orange);
+}
+
+.nn-desktop .nn-navitem[data-level="0"].nn-selected::after {
+  --pc-fill: var(--pc-pink-light);
+}
+
+.nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected::after {
+  --pc-fill: var(--pc-yellow);
+}
+
+.nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected::after {
+  --pc-fill: var(--pc-green);
+}
+
+/* Keep selected row colors unchanged when the pane or window loses focus.
+ * NN swaps selected-* tokens for selected-inactive-* on inactive panes,
+ * which can darken the row or the count pill. Force the same gradient
+ * and forbid opacity/filter dimming in both states. */
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-selected::after {
+  --pc-fill: var(--nn-theme-navitem-selected-bg);
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+  box-shadow: none;
+  opacity: 1;
+  filter: none;
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="3"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="3"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="4"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="4"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="5"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="5"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="6"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="6"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="7"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="7"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="8"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="8"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="9"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="9"].nn-selected::after,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-selected::after {
+  --pc-fill: var(--pc-orange);
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem[data-level="0"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem[data-level="0"].nn-selected::after {
+  --pc-fill: var(--pc-pink-light);
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected::after {
+  --pc-fill: var(--pc-yellow);
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected::after,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected::after {
+  --pc-fill: var(--pc-green);
+}
+
+/* Count pills must keep their tinted fill when the pane/window loses focus. */
+body:not(.is-focused) .nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-pink-light) 30%, white);
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-yellow) 30%, white);
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-green) 30%, white);
+}
+
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="3"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="3"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="4"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="4"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="5"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="5"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="6"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="6"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="7"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="7"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="8"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="8"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="9"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="9"].nn-selected .nn-navitem-count,
+body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-selected .nn-navitem-count,
+.workspace-leaf:not(.mod-active) .nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-orange) 30%, white);
 }
 
 .nn-file.nn-selected .nn-file-content::before {
@@ -1387,14 +1683,99 @@ body {
 }
 
 .nn-desktop .nn-navitem:not([data-search-match]):hover::after {
-  background-color: var(--pc-orange);
+  --pc-fill: var(--pc-orange);
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
 }
 
+/* Top-level items (vault root, recent files, tags, properties) — light pink + black text */
+.nn-desktop .nn-navitem[data-level="0"]:not([data-search-match]):hover::after {
+  --pc-fill: var(--pc-pink-light);
+}
+
+.nn-desktop .nn-navitem[data-level="0"]:hover .nn-navitem-name,
+.nn-desktop .nn-navitem[data-level="0"]:hover .nn-navitem-icon,
+.nn-desktop .nn-navitem[data-level="0"]:hover .nn-navitem-chevron,
+.nn-desktop .nn-navitem[data-level="0"]:hover .nn-navitem-count,
+.nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-name,
+.nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-icon,
+.nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-chevron,
+.nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-count {
+  color: var(--pc-yellow-text);
+}
+
+.nn-desktop .nn-navitem[data-level="0"]:hover .nn-navitem-count,
+.nn-desktop .nn-navitem[data-level="0"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-pink-light) 30%, white);
+}
+
+/* Level 1 folders — yellow gradient + black text */
+.nn-desktop .nn-navitem.nn-folder[data-level="1"]:not([data-search-match]):hover::after {
+  --pc-fill: var(--pc-yellow);
+}
+
+.nn-desktop .nn-navitem.nn-folder[data-level="1"]:hover .nn-navitem-name,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"]:hover .nn-navitem-icon,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"]:hover .nn-navitem-chevron,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"]:hover .nn-navitem-count,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-name,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-icon,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-chevron,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-count {
+  color: var(--pc-yellow-text);
+}
+
+.nn-desktop .nn-navitem.nn-folder[data-level="1"]:hover .nn-navitem-count,
+.nn-desktop .nn-navitem.nn-folder[data-level="1"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-yellow) 30%, white);
+}
+
+/* Level 2 folders — green gradient + white text */
+.nn-desktop .nn-navitem.nn-folder[data-level="2"]:not([data-search-match]):hover::after {
+  --pc-fill: var(--pc-green);
+}
+
+.nn-desktop .nn-navitem.nn-folder[data-level="2"]:hover .nn-navitem-name,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"]:hover .nn-navitem-icon,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"]:hover .nn-navitem-chevron,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"]:hover .nn-navitem-count,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-name,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-icon,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-chevron,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-count {
+  color: var(--pc-on-color);
+}
+
+.nn-desktop .nn-navitem.nn-folder[data-level="2"]:hover .nn-navitem-count,
+.nn-desktop .nn-navitem.nn-folder[data-level="2"].nn-selected .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-green) 30%, white);
+}
+
+/* Generic hover text color (white) for levels without black text */
 .nn-desktop .nn-navitem:hover .nn-navitem-name,
 .nn-desktop .nn-navitem:hover .nn-navitem-icon,
 .nn-desktop .nn-navitem:hover .nn-navitem-chevron,
 .nn-desktop .nn-navitem:hover .nn-navitem-count {
   color: var(--pc-on-color);
+}
+
+/* Generic hover count pill (orange) for levels without own pill */
+.nn-desktop .nn-navitem:hover .nn-navitem-count {
+  background: color-mix(in srgb, var(--pc-orange) 30%, white);
 }
 
 /* Row hover is painted on the content box, not an overlay: an overlay
@@ -1912,8 +2293,8 @@ blockquote,
 
 /* NN keeps a row selected when the pane loses focus, but switches every
  * selected-* token to its selected-inactive-* twin. Those were unset, so
- * the pill fell back to a transparent fill the moment focus moved to the
- * editor. NN's own pill rules carry five classes of specificity, so the
+ * the pill fell back to a transparent/dark fill the moment focus moved to
+ * the editor. NN's own pill rules carry five classes of specificity, so the
  * fix has to go through the tokens, not a plain background rule. */
 body {
   --nn-theme-file-selected-inactive-tag-bg: rgba(255, 255, 255, 0.24);
@@ -1923,7 +2304,7 @@ body {
   --nn-theme-file-selected-inactive-property-color: var(--pc-on-color);
   --nn-theme-file-selected-inactive-property-border-color: transparent;
 
-  --nn-theme-navitem-selected-inactive-count-bg: rgba(255, 255, 255, 0.24);
+  --nn-theme-navitem-selected-inactive-count-bg: color-mix(in srgb, var(--pc-orange) 30%, white);
   --nn-theme-navitem-selected-inactive-count-color: var(--pc-on-color);
 }
 
@@ -2732,16 +3113,24 @@ body:not(.is-focused) .workspace-tab-header.is-active .workspace-tab-header-inne
   stroke: currentColor;
 }
 
-/* 设置界面改纯白
+/* 设置界面半透明
  *
- * 半透明 + 模糊在这里帮倒忙：设置面板面积大、停留时间长，背后又常常是
- * 高饱和的选中行，24px 模糊会把那片蓝晕成一大块色斑，压在正文上很脏。
- * 菜单、命令面板这类小而短暂的浮层保留玻璃效果，设置单独走实色。 */
+ * 命令面板（cmd+P）已经是半透毛玻璃，设置面板面积更大、停留更久，
+ * 所以背景比命令面板再稍微实一点，同时保留轻微模糊以融入整体。 */
+body {
+  --pc-settings-bg: rgba(255, 255, 255, 0.92);
+  --pc-settings-blur: 16px;
+}
+
+.theme-dark {
+  --pc-settings-bg: rgba(30, 34, 40, 0.94);
+}
+
 .modal.mod-settings,
 .modal-container .modal.mod-settings {
-  background-color: var(--pc-solid);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+  background-color: var(--pc-settings-bg);
+  -webkit-backdrop-filter: blur(var(--pc-settings-blur)) saturate(160%);
+  backdrop-filter: blur(var(--pc-settings-blur)) saturate(160%);
 }
 
 .modal.mod-settings .vertical-tab-header,
@@ -2891,23 +3280,14 @@ kbd {
   background: transparent !important;
 }
 
-/* Hovered row: raised white pill */
 .prompt .suggestion-item:hover,
 .suggestion-container .suggestion-item:hover {
-  background: var(--pc-solid);
-  box-shadow:
-    inset 0 0 0 1px var(--pc-line),
-    0 1px 3px rgba(0, 0, 0, 0.08);
+  background: var(--pc-prompt-selected);
+  box-shadow: none;
   color: var(--text-normal);
 }
 
-.theme-dark .prompt .suggestion-item:hover,
-.theme-dark .suggestion-container .suggestion-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 1px var(--pc-line);
-}
-
-/* Keyboard selection stays the flat blue band, and wins over hover */
+/* Keyboard selection uses the same flat blue band as hover */
 .prompt .suggestion-item.is-selected,
 .prompt .suggestion-item.is-selected:hover,
 .suggestion-container .suggestion-item.is-selected,
@@ -3074,10 +3454,10 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* 设置界面仍然走实色：它面积大、停留久，透出来的内容会一直干扰阅读 */
+/* 设置界面半透明：比命令面板稍实，减少干扰又保留玻璃质感 */
 .modal.mod-settings,
 .modal-container .modal.mod-settings {
-  background-color: var(--pc-solid);
+  background-color: var(--pc-settings-bg);
 }
 
 /* =====================================================================
@@ -3157,10 +3537,10 @@ body {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* 设置面板依然实色 */
+/* 设置面板半透明 */
 .modal.mod-settings,
 .modal-container .modal.mod-settings {
-  background-color: var(--pc-solid);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+  background-color: var(--pc-settings-bg);
+  -webkit-backdrop-filter: blur(var(--pc-settings-blur)) saturate(160%);
+  backdrop-filter: blur(var(--pc-settings-blur)) saturate(160%);
 }
