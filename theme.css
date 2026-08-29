@@ -2211,3 +2211,14 @@ body {
   border-radius: 3px;
   padding: 0.05em 0.2em;
 }
+
+/* 粉底加深：92% 亮度在半透明白底上几乎看不出来，压到 86% 并提高饱和度 */
+body {
+  --pc-pink: hsl(336, 92%, 86%);
+  --pc-pink-ink: hsl(336, 68%, 32%);
+}
+
+.theme-dark {
+  --pc-pink: hsla(336, 70%, 60%, 0.32);
+  --pc-pink-ink: hsl(336, 78%, 82%);
+}
