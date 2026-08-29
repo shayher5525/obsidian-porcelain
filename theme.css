@@ -2959,3 +2959,41 @@ body {
 .theme-dark .modal-bg {
   background: rgba(0, 0, 0, 0.28);
 }
+
+/* 发光感的来源有两条，都去掉：
+ *
+ * 1. saturate()。它是 vibrancy 配方的一半，会把模糊后的色块推得更艳，
+ *    亮区尤其明显 —— 读起来就是在发光。
+ * 2. 模糊本身会把亮像素向外抹开，面板边缘于是浮起一圈光晕。遮罩压暗
+ *    一档、面板不透明度提高，透进来的亮部就少了。 */
+
+body {
+  --pc-prompt-bg: rgba(255, 255, 255, 0.92);
+}
+
+.theme-dark {
+  --pc-prompt-bg: rgba(28, 32, 38, 0.94);
+}
+
+.modal-bg {
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(var(--pc-modal-backdrop-blur));
+  backdrop-filter: blur(var(--pc-modal-backdrop-blur));
+}
+
+.theme-dark .modal-bg {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.prompt,
+.suggestion-container,
+.suggestion-popover {
+  -webkit-backdrop-filter: blur(var(--pc-prompt-blur));
+  backdrop-filter: blur(var(--pc-prompt-blur));
+}
+
+.menu,
+.popover.hover-popover {
+  -webkit-backdrop-filter: blur(var(--pc-popup-blur));
+  backdrop-filter: blur(var(--pc-popup-blur));
+}
