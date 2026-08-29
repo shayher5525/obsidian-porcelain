@@ -1670,3 +1670,224 @@ body {
   --nn-theme-file-selected-tag-border-color: transparent;
   --nn-theme-file-selected-property-border-color: transparent;
 }
+
+/* =====================================================================
+ * 16  Type: CJK stacks, lists, quotes, footnotes, marks
+ *
+ * The stacks are deliberately generic — a published theme should not
+ * name fonts the reader does not have. Latin faces come first so they
+ * win for shared glyphs (digits, punctuation, Latin letters); the CJK
+ * face only fills what the Latin face lacks. The reverse order makes
+ * Latin text render in the CJK face's Latin glyphs, which sit on a
+ * different baseline and are usually a weight heavier.
+ * ===================================================================== */
+
+body {
+  --font-text-theme:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC',
+    'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
+
+  --font-interface-theme:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC',
+    'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
+
+  --font-monospace-theme:
+    'JetBrains Mono', 'SF Mono', Menlo, Consolas,
+    'Sarasa Mono SC', 'Noto Sans Mono CJK SC', monospace;
+
+  /* Only features that are safe across CJK faces. Stylistic sets are
+   * left alone: they are remapped per font, and enabling one blindly
+   * shrinks capitals in some CJK variable fonts. */
+  --font-features: 'liga', 'calt', 'kern';
+}
+
+body,
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  font-feature-settings: var(--font-features);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Form controls do not inherit font-feature-settings — the UA stylesheet
+ * resets their font shorthand, which drops inherited OpenType features. */
+select,
+input,
+textarea,
+button,
+.dropdown {
+  font-feature-settings: var(--font-features);
+}
+
+/* Mixed CJK/Latin runs read better with a hair of tracking on Latin and
+ * none on CJK. `font-variant-east-asian: proportional-width` keeps Latin
+ * punctuation from being padded to a full-width cell. */
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  font-variant-east-asian: proportional-width;
+  letter-spacing: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
+  line-break: normal;
+}
+
+/* Headings in CJK need less line-height than the 1.7 body value and a
+ * touch of negative tracking so the glyphs do not look loose. */
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6,
+.inline-title,
+.HyperMD-header {
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+/* ---------- Lists ---------- */
+
+body {
+  --list-indent: 1.8em;
+  --list-indent-editing: 1.8em;
+  --list-spacing: 0.15em;
+  --list-marker-color: var(--pc-ink-faint);
+  --list-marker-color-hover: var(--pc-ink-muted);
+  --list-bullet-size: 0.32em;
+  --list-bullet-radius: 50%;
+}
+
+.markdown-rendered ul,
+.markdown-rendered ol {
+  padding-inline-start: var(--list-indent);
+}
+
+.markdown-rendered li + li {
+  margin-top: var(--list-spacing);
+}
+
+/* Nested lists tighten up: at depth the spacing reads as a gap, not
+ * as separation. */
+.markdown-rendered li > ul,
+.markdown-rendered li > ol {
+  margin-top: var(--list-spacing);
+  margin-bottom: 0;
+}
+
+/* A paragraph inside a list item should not inherit paragraph spacing */
+.markdown-rendered li > p {
+  margin: 0;
+}
+
+.markdown-rendered li > p + p {
+  margin-top: var(--p-spacing);
+}
+
+.markdown-rendered ul > li::marker {
+  color: var(--list-marker-color);
+}
+
+.markdown-rendered ol > li::marker {
+  color: var(--list-marker-color);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Task lists */
+.markdown-rendered .task-list-item {
+  padding-inline-start: 0;
+}
+
+.markdown-rendered .task-list-item-checkbox {
+  margin-inline-end: 0.5em;
+  vertical-align: middle;
+}
+
+.markdown-rendered .task-list-item.is-checked {
+  color: var(--checklist-done-color);
+}
+
+/* ---------- Quotes ---------- */
+
+blockquote,
+.markdown-rendered blockquote {
+  margin: var(--p-spacing) 0;
+  padding: 0.1em 0 0.1em 1.1em;
+  border-left: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  background: transparent;
+  color: var(--blockquote-color);
+  font-style: normal;
+}
+
+.markdown-rendered blockquote p:first-child {
+  margin-top: 0;
+}
+
+.markdown-rendered blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Marks and footnotes ---------- */
+
+.markdown-rendered mark,
+.cm-highlight {
+  background: var(--text-highlight-bg);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0.05em 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.markdown-rendered sup.footnote-ref,
+.markdown-rendered .footnote-ref a {
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  color: var(--link-color);
+  text-decoration: none;
+  padding: 0 0.15em;
+}
+
+.markdown-rendered .footnotes {
+  font-size: 0.9em;
+  color: var(--pc-ink-muted);
+  border-top: none;
+  margin-top: 2.4em;
+  padding-top: 1.2em;
+  background-image: var(--pc-rule-h);
+  background-size: 100% 1px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+.markdown-rendered .footnote-backref {
+  color: var(--pc-ink-faint);
+  text-decoration: none;
+}
+
+/* ---------- Misc inline ---------- */
+
+.markdown-rendered abbr {
+  text-decoration: underline dotted var(--pc-ink-faint);
+  text-underline-offset: 0.2em;
+}
+
+.markdown-rendered del,
+.markdown-rendered s {
+  color: var(--pc-ink-faint);
+}
+
+.markdown-rendered sub,
+.markdown-rendered sup {
+  line-height: 0;
+}
+
+/* Links: the underline appears on hover and is offset so CJK glyphs,
+ * which sit lower than Latin, are not crossed by it. */
+.markdown-rendered a,
+.cm-link,
+.cm-hmd-internal-link {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
