@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1 — 2026-08-29
+
+### Changed
+
+- Relicensed from MIT to **GPL-3.0**. A modified version now has to stay open
+  and say that it was changed; commercial use is still allowed.
+
 ## 0.2.0 — 2026-08-29
 
 First version with the full interface covered. Everything below was written

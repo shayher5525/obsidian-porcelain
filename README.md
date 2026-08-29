@@ -61,4 +61,8 @@ overwrite your changes.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+GPL-3.0. See [LICENSE](LICENSE).
+
+You may use, modify, and redistribute it, including commercially. If you
+distribute a modified version, it has to stay under GPL-3.0, ship its source,
+and state that it was changed.
