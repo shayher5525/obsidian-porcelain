@@ -2347,3 +2347,40 @@ button.clickable-icon:hover,
   background: rgba(var(--pc-tint), 0.5);
   box-shadow: inset 0 0 0 1px var(--color-accent);
 }
+
+/* 属性名悬停也不要底和框 */
+.metadata-property-key-input:hover,
+.metadata-property-key:hover .metadata-property-key-input {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+/* 标签式属性值：红底白字圆角，无描边 */
+.metadata-property[data-property-key='tags'] .multi-select-pill,
+.metadata-property[data-property-key='tags'] .multi-select-pill-content,
+.metadata-property[data-property-key='tags'] .multi-select-pill.multi-select-pill-content {
+  background: var(--pc-red);
+  color: var(--pc-on-color);
+  border: none;
+  box-shadow: none;
+  border-radius: var(--pc-radius);
+}
+
+.metadata-property[data-property-key='tags'] .multi-select-pill .multi-select-pill-content,
+.metadata-property[data-property-key='tags'] .multi-select-pill a,
+.metadata-property[data-property-key='tags'] .multi-select-pill span {
+  color: var(--pc-on-color);
+}
+
+/* 删除按钮跟着转白，红底上默认的深色叉看不清 */
+.metadata-property[data-property-key='tags'] .multi-select-pill-remove-button,
+.metadata-property[data-property-key='tags'] .multi-select-pill-remove-button svg {
+  color: var(--pc-on-color);
+  opacity: 0.75;
+}
+
+.metadata-property[data-property-key='tags'] .multi-select-pill-remove-button:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
