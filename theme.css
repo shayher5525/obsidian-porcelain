@@ -1908,3 +1908,18 @@ body {
   --nn-theme-navitem-selected-inactive-count-bg: rgba(255, 255, 255, 0.24);
   --nn-theme-navitem-selected-inactive-count-color: var(--pc-on-color);
 }
+
+/* The body's inset outline is a square rectangle, but the container
+ * clips to a radius — at the bottom corners the green line ran straight
+ * on while the clip curved away, so the frame looked broken. Round the
+ * body's bottom corners to match, and drop the container's own grey
+ * outline: the header and body now cover the whole box, and two frames
+ * in different colors diverge at exactly those corners. */
+.callout {
+  box-shadow: none;
+}
+
+.callout .callout-content {
+  border-bottom-left-radius: var(--callout-radius);
+  border-bottom-right-radius: var(--callout-radius);
+}
