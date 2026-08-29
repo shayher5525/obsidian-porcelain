@@ -2269,3 +2269,32 @@ span.cm-inline-code {
 .mod-root .workspace-tab-header-container {
   padding-bottom: 6px;
 }
+
+/* 图标按钮不要边框
+ * 通用 button 规则给了半透明底 + 1px 描边，那是给「有文字的按钮」设计的。
+ * 页头的前进/后退、阅读模式、更多操作都是 button 元素，于是也被套上了框。
+ * .clickable-icon 那条只声明了颜色和圆角，没声明 background/box-shadow，
+ * 这两项就继续由 button 规则决定——补上即可。 */
+.clickable-icon,
+button.clickable-icon,
+.view-header .clickable-icon,
+.view-actions .clickable-icon,
+.workspace-tab-header .clickable-icon,
+.nav-buttons-container .clickable-icon,
+.side-dock-ribbon-action,
+.workspace-tab-header-inner-close-button,
+.workspace-tab-header-new-tab,
+.sidebar-toggle-button {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.clickable-icon:hover,
+button.clickable-icon:hover,
+.view-header .clickable-icon:hover,
+.view-actions .clickable-icon:hover {
+  background: rgba(var(--pc-tint), 0.5);
+  box-shadow: none;
+  border: none;
+}
