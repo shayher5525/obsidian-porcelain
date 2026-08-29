@@ -2384,3 +2384,21 @@ button.clickable-icon:hover,
   opacity: 1;
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* 文字被削：上一条把红底和圆角同时给了外层 pill 和内层 content。
+ * 内层带 overflow: hidden，圆角一加，四角就把字形切掉，中文字面比
+ * 西文高，切得更明显。底色只由外层负责，内层恢复透明、不裁剪。 */
+.metadata-property[data-property-key='tags'] .multi-select-pill {
+  padding: 0.1em 0.5em;
+  line-height: 1.5;
+  overflow: visible;
+}
+
+.metadata-property[data-property-key='tags'] .multi-select-pill-content,
+.metadata-property[data-property-key='tags'] .multi-select-pill .multi-select-pill-content {
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: inherit;
+}
