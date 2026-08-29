@@ -2857,3 +2857,77 @@ kbd {
   font-family: var(--font-interface-theme);
   font-size: 0.85em;
 }
+
+/* =====================================================================
+ * Command palette, second pass
+ *
+ * Two things were still off against the reference:
+ *   - the blue focus ring around the search field. It is drawn on
+ *     .prompt-input-container.is-focused, not on the input, so clearing
+ *     the input's own border left it untouched.
+ *   - the hovered row. The reference lifts it into a white pill with a
+ *     hairline and a soft shadow, distinct from the selected row's flat
+ *     blue band, so keyboard position and pointer position stay legible
+ *     at the same time.
+ * ===================================================================== */
+
+.prompt-input-container,
+.prompt-input-container.is-focused,
+.prompt .prompt-input-container,
+.prompt .prompt-input-container.is-focused {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent;
+}
+
+.prompt-input,
+.prompt-input:focus,
+.prompt-input:focus-visible,
+.prompt-input:hover {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+/* Hovered row: raised white pill */
+.prompt .suggestion-item:hover,
+.suggestion-container .suggestion-item:hover {
+  background: var(--pc-solid);
+  box-shadow:
+    inset 0 0 0 1px var(--pc-line),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  color: var(--text-normal);
+}
+
+.theme-dark .prompt .suggestion-item:hover,
+.theme-dark .suggestion-container .suggestion-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px var(--pc-line);
+}
+
+/* Keyboard selection stays the flat blue band, and wins over hover */
+.prompt .suggestion-item.is-selected,
+.prompt .suggestion-item.is-selected:hover,
+.suggestion-container .suggestion-item.is-selected,
+.suggestion-container .suggestion-item.is-selected:hover {
+  background: var(--pc-prompt-selected);
+  box-shadow: none;
+  color: var(--text-normal);
+}
+
+/* Close button */
+.prompt .search-input-clear-button,
+.prompt .modal-close-button {
+  color: var(--pc-ink-faint);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.prompt .search-input-clear-button:hover,
+.prompt .modal-close-button:hover {
+  color: var(--pc-ink);
+  background: rgba(var(--pc-tint), 0.5);
+}
