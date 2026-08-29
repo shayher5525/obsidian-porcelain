@@ -2690,3 +2690,26 @@ body {
 body {
   --pc-tooltip-bg: hsla(209, 88%, 46%, 0.5);
 }
+
+/* 活动标签图标在窗口失焦后变黑
+ *
+ * 底色仍是蓝的，说明 .is-active 还在；变黑的是图标本身。Obsidian 对
+ * 未聚焦状态另有一套颜色规则，特异性高于我这条，于是图标回落到默认
+ * 深色，压在蓝底上就成了黑。
+ * 显式覆盖两种状态：只要背景是强调色，前景就必须是 on-color。 */
+.workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.workspace-tab-header.is-active .workspace-tab-header-inner-title,
+body:not(.is-focused) .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body:not(.is-focused) .workspace-tab-header.is-active .workspace-tab-header-inner-title,
+.mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body:not(.is-focused) .mod-left-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+body:not(.is-focused) .mod-right-split .workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+  color: var(--pc-on-color) !important;
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-icon svg,
+body:not(.is-focused) .workspace-tab-header.is-active .workspace-tab-header-inner-icon svg {
+  color: var(--pc-on-color) !important;
+  stroke: currentColor;
+}
