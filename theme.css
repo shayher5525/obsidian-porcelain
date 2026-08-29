@@ -2049,7 +2049,7 @@ body {
   background: transparent;
   color: var(--table-header-color);
   font-weight: var(--table-header-weight);
-  text-align: start;
+  text-align: center;
   border: none;
   padding: var(--table-cell-padding);
 }
@@ -2074,4 +2074,12 @@ body {
 .markdown-rendered td,
 .markdown-rendered th {
   font-variant-numeric: tabular-nums;
+}
+
+/* 表头居中；正文列保持各自的对齐（Markdown 的 :--- / :---: 语法仍生效）。
+ * Obsidian 会把列对齐写成 th/td 的行内 style，行内优先级高于样式表，
+ * 所以显式声明了对齐的列不受这条影响——只有未声明的列会居中。 */
+.markdown-rendered th,
+.markdown-source-view.mod-cm6 th {
+  text-align: center;
 }
