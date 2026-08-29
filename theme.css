@@ -2465,3 +2465,24 @@ body,
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
 }
+
+/* 强调色按钮悬停：保持蓝底白字。
+ * .metadata-add-button 不带 .mod-cta 类，悬停时只命中通用 button:hover，
+ * 于是换成了半透明白底、文字也回落到默认深色。 */
+body button.mod-cta:hover,
+body .mod-cta:hover,
+body input[type='submit']:hover,
+body .metadata-add-button:hover,
+body .metadata-properties-heading .metadata-add-button:hover {
+  --pc-fill: var(--pc-blue-hi);
+  background-color: var(--pc-fill);
+  color: var(--pc-on-color);
+  box-shadow: none;
+  border: none;
+}
+
+body button.mod-cta:hover *,
+body .mod-cta:hover *,
+body .metadata-add-button:hover * {
+  color: var(--pc-on-color);
+}
