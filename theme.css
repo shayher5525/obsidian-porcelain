@@ -2619,3 +2619,27 @@ body {
   background: rgba(var(--pc-tint), 0.5);
   box-shadow: inset 0 0 0 1px var(--color-accent);
 }
+
+/* 一级、二级标题上色：h2 用表头那个蓝，h1 再深一档 */
+body {
+  --pc-blue-deep: hsl(212, 88%, 34%);
+  --h1-color: var(--pc-blue-deep);
+  --h2-color: var(--pc-blue);
+}
+
+.theme-dark {
+  --pc-blue-deep: hsl(209, 82%, 74%);
+}
+
+.markdown-rendered h1,
+.markdown-source-view.mod-cm6 .HyperMD-header-1,
+.markdown-source-view.mod-cm6 .cm-header-1,
+.inline-title {
+  color: var(--pc-blue-deep);
+}
+
+.markdown-rendered h2,
+.markdown-source-view.mod-cm6 .HyperMD-header-2,
+.markdown-source-view.mod-cm6 .cm-header-2 {
+  color: var(--pc-blue);
+}
