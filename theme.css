@@ -469,8 +469,10 @@ body {
   display: none;
 }
 
-/* Hover — orange (files, level 3+ folders, and other tree items) */
-.tree-item-self.is-clickable:hover,
+/* Hover — orange (files, nav folders, and other tree items).
+ * Per-level directory color rules below override --pc-fill with !important
+ * so gradients render yellow/green/orange for the intended folder tiers. */
+.tree-item-self.is-clickable:hover:not(.nav-folder-title):not(.nav-file-title),
 .nav-file-title:hover,
 .nav-folder-title:hover,
 .backlink-pane > .tree-item-self:hover,
@@ -524,131 +526,326 @@ body {
   color: var(--pc-on-color);
 }
 
-/* Vault root (when shown) — orange gradient + white text */
+/* Fallback gradient render for any folder title in the files container.
+ * Per-level rules below override --pc-fill with !important so the correct
+ * tint renders even when plugins (e.g. Vault Dashboard X) alter the tree
+ * DOM or re-render the sidebar during state changes. */
+.nav-files-container .nav-folder-title:hover,
+.nav-files-container .nav-folder-title.is-active,
+.nav-files-container .nav-folder-title.is-selected,
+.nav-files-container .nav-folder-title:focus-visible {
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, white var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, white var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, black var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+  border-color: transparent;
+}
+
+/* ==========================================================================
+ * Directory tier colors by .nav-folder-children depth (structure-based).
+ *
+ *   General rules (vault root hidden in the UI):
+ *     L1 yellow  → NOT inside any .nav-folder-children (top folder level)
+ *     L2 green   → inside exactly 1x .nav-folder-children
+ *     L3+ orange → inside 2x+ .nav-folder-children
+ *
+ *   Mod-root corrections (vault root visible — shifts depth by 1):
+ *     .mod-root > title          → orange   (override general-L1 yellow)
+ *     .mod-root children L1      → yellow   (override general-L2 green)
+ *     .mod-root grandchildren L2 → green    (override general-L3+ orange)
+ *     deeper under mod-root      → orange   (already correct, kept for safety)
+ *
+ * These selectors use descendant / negation patterns rather than > direct-
+ * child chains, so Vault Dashboard X (or any plugin adding wrapper divs
+ * around tree nodes) cannot break color assignment — regardless of how many
+ * intermediate <div>s the plugin injects.
+ * ========================================================================== */
+/* ------- General: L1 yellow ------- */
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active),
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible {
+  --pc-fill: var(--pc-yellow) !important;
+  color: var(--pc-yellow-text) !important;
+}
+
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active .tree-item-inner,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active .tree-item-icon,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active .nav-file-tag,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected .tree-item-inner,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected .tree-item-icon,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected .nav-file-tag,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible .tree-item-inner,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible .tree-item-icon,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible .nav-file-tag {
+  color: var(--pc-yellow-text) !important;
+}
+
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-active .nav-file-tag,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *).is-selected .nav-file-tag,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible .tree-item-flair,
+.nav-files-container .nav-folder-title:not(.nav-folder-children *):focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-yellow) 30%, white) !important;
+}
+
+/* ------- General: L2 green ------- */
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active),
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible {
+  --pc-fill: var(--pc-green) !important;
+  color: var(--pc-on-color) !important;
+}
+
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible .nav-file-tag {
+  color: var(--pc-on-color) !important;
+}
+
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-active .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title).is-selected .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-title:not(.nav-folder-children .nav-folder-children .nav-folder-title):focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-green) 30%, white) !important;
+}
+
+/* ------- General: L3+ orange ------- */
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active),
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible {
+  --pc-fill: var(--pc-orange) !important;
+  color: var(--pc-on-color) !important;
+}
+
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible .tree-item-inner,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible .tree-item-icon,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible .nav-file-tag {
+  color: var(--pc-on-color) !important;
+}
+
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder-children .nav-folder-children .nav-folder-title:focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-orange) 30%, white) !important;
+}
+
+/* ------- Mod-root: vault root visible corrections ------- */
+/* Vault root title itself — orange (override general L1 yellow) */
 .nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active),
-.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active {
-  --pc-fill: var(--pc-orange);
-  color: var(--pc-on-color);
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible {
+  --pc-fill: var(--pc-orange) !important;
+  color: var(--pc-on-color) !important;
 }
 
-/* Level 1 folders — yellow gradient + black text
-   New Obsidian wraps the tree in .nav-folder.mod-root;
-   hidden vault root puts top-level .nav-folder directly under an anonymous div. */
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active),
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible .nav-file-tag {
+  color: var(--pc-on-color) !important;
+}
+
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-title:focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-orange) 30%, white) !important;
+}
+
+/* Direct children of mod-root → real L1 yellow (override general L2 green) */
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active),
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active {
-  --pc-fill: var(--pc-yellow);
-  color: var(--pc-yellow-text);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible {
+  --pc-fill: var(--pc-yellow) !important;
+  color: var(--pc-yellow-text) !important;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
-  color: var(--pc-yellow-text);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .nav-file-tag {
+  color: var(--pc-yellow-text) !important;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
-  background: color-mix(in srgb, var(--pc-yellow) 30%, white);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-yellow) 30%, white) !important;
 }
 
-/* Level 2 folders — green gradient + white text */
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active),
+/* Grandchildren of mod-root → real L2 green (override general L3+ orange) */
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active),
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active {
-  --pc-fill: var(--pc-green);
-  color: var(--pc-on-color);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible {
+  --pc-fill: var(--pc-green) !important;
+  color: var(--pc-on-color) !important;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-inner,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-icon,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-inner,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-icon,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
-  color: var(--pc-on-color);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .nav-file-tag {
+  color: var(--pc-on-color) !important;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .tree-item-flair,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:hover:not(.is-active) .nav-file-tag,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag {
-  background: color-mix(in srgb, var(--pc-green) 30%, white);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-title:focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-green) 30%, white) !important;
 }
 
-/* Level 3+ folders — orange gradient + white text */
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active),
+/* Great-grandchildren+ of mod-root → real L3+ orange */
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active),
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active {
-  --pc-fill: var(--pc-orange);
-  color: var(--pc-on-color);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible {
+  --pc-fill: var(--pc-orange) !important;
+  color: var(--pc-on-color) !important;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-inner,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-icon,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-inner,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-icon,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-inner,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-icon,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-inner,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-icon,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag {
-  color: var(--pc-on-color);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible .tree-item-inner,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible .tree-item-icon,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible .nav-file-tag {
+  color: var(--pc-on-color) !important;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .tree-item-flair,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:hover:not(.is-active) .nav-file-tag,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container > div > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
 .nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .tree-item-flair,
-.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag {
-  background: color-mix(in srgb, var(--pc-orange) 30%, white);
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-active .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title.is-selected .nav-file-tag,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible .tree-item-flair,
+.nav-files-container .nav-folder.mod-root > .nav-folder-children > .nav-folder > .nav-folder-children > .nav-folder > .nav-folder-children .nav-folder-title:focus-visible .nav-file-tag {
+  background: color-mix(in srgb, var(--pc-orange) 30%, white) !important;
 }
+
 
 .tree-item-self.is-clickable:hover .tree-item-inner,
 .tree-item-self.is-clickable:hover .tree-item-icon,
@@ -1419,12 +1616,30 @@ body {
   box-shadow: var(--pc-outline);
 }
 
-.canvas-controls .canvas-control-item,
 .canvas-card-menu {
   background: var(--pc-popup-bg);
   border: 1px solid var(--pc-line);
   border-radius: var(--pc-radius);
   box-shadow: none;
+}
+
+/* Canvas controls: one white pill; groups and buttons stay unpainted. */
+.canvas-controls {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.canvas-controls .canvas-control-group,
+.canvas-controls .canvas-control-item,
+.canvas-controls .canvas-control-item:hover,
+.canvas-controls .canvas-control-item:active,
+.canvas-controls .canvas-control-item.is-active {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Mobile: no window translucency, so surfaces need a floor. */
@@ -1791,13 +2006,32 @@ body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-sele
 .nn-desktop .nn-file:not(.nn-selected):hover .nn-file-preview,
 .nn-desktop .nn-file:not(.nn-selected):hover .nn-file-date,
 .nn-desktop .nn-file:not(.nn-selected):hover .nn-parent-folder,
-.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-name-suffix {
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-name-suffix,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-extension-text,
+.nn-desktop .nn-file:not(.nn-selected):hover .nn-file-extension-icon {
+  color: var(--pc-on-color);
+}
+
+.nn-file.nn-selected .nn-file-extension-text,
+.nn-file.nn-selected .nn-file-extension-icon {
   color: var(--pc-on-color);
 }
 
 .nn-navitem-content,
 .nn-file {
   background: transparent;
+}
+
+/* Vault Dashboard X updates a large paint surface beside the translucent
+ * sidebars. Chromium may then reuse damaged transparent tiles, leaving old
+ * hover rows (and even DevTools) visible. While the view is mounted, give the
+ * renderer one opaque root surface that deterministically clears old frames. */
+body:has(.workspace-leaf-content[data-type='vault-dashboard-x-view']) .app-container {
+  background: var(--pc-solid) !important;
+}
+
+body:has(.workspace-leaf-content[data-type='vault-dashboard-x-view']) .app-container::before {
+  display: none;
 }
 
 /* Quick actions read white only on the colored rows */
