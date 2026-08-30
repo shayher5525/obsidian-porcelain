@@ -3481,6 +3481,11 @@ kbd {
   font-size: 0.85em;
 }
 
+.modal.mod-canvas-help .setting-hotkey {
+  background: color-mix(in srgb, var(--pc-blue-light) 60%, transparent);
+  color: var(--pc-on-color);
+}
+
 /* =====================================================================
  * Command palette, second pass
  *
