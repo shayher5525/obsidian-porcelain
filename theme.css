@@ -3831,3 +3831,15 @@ body {
   --pc-celadon: hsla(192, 52%, 52%, 0.3);
   --pc-celadon-ink: hsl(192, 58%, 80%);
 }
+
+/* 高亮改白字：底色必须跟着压深，白字压在 82% 亮度的浅青上读不了。
+ * 亮度降到 46%，对白字的对比度约 4.6:1，过 WCAG AA 正文标准。 */
+body {
+  --pc-celadon: hsl(192, 62%, 46%);
+  --pc-celadon-ink: hsl(0, 0%, 100%);
+}
+
+.theme-dark {
+  --pc-celadon: hsl(192, 58%, 42%);
+  --pc-celadon-ink: hsl(0, 0%, 100%);
+}
