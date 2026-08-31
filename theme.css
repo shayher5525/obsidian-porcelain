@@ -3875,3 +3875,14 @@ body {
 .theme-dark {
   --pc-celadon: hsl(209, 62%, 50%);
 }
+
+/* 高亮换浅柠檬黄。黄底本身亮度就高，字色沿用正文墨色，对比约 11:1。 */
+body {
+  --pc-celadon: hsl(52, 94%, 78%);
+  --pc-celadon-ink: var(--pc-ink);
+}
+
+.theme-dark {
+  --pc-celadon: hsla(52, 82%, 60%, 0.32);
+  --pc-celadon-ink: hsl(52, 60%, 86%);
+}
