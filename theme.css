@@ -3866,3 +3866,12 @@ body {
 .theme-dark {
   --pc-celadon-ink: hsl(0, 0%, 100%);
 }
+
+/* 高亮再浅一档：亮度 64% → 74%，饱和略降，深字对比度更宽裕 */
+body {
+  --pc-celadon: hsl(209, 72%, 74%);
+}
+
+.theme-dark {
+  --pc-celadon: hsl(209, 62%, 50%);
+}
