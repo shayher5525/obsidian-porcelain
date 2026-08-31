@@ -1,5 +1,43 @@
 # Changelog
 
+## 0.3.0 — 2026-08-29
+
+### Added
+
+- **Popup glass.** Modals, the command palette, and menus sit on a 72% white
+  panel with a 24px blur; the backdrop gets only 3px plus a 16% dim. The heavy
+  blur belongs on the panel, not behind it — reversing the two makes bright
+  areas smear outward and the panel reads as if it were glowing.
+- **Command palette.** Pointer position and keyboard position are shown
+  differently: hover raises a white pill, selection is a flat accent band, so
+  both stay legible at once.
+- **Blue headings.** `h1` deep blue, `h2` the table-header blue, in both the
+  rendered and live-preview paths.
+- **Celadon-to-blue highlights.** `==text==` uses a lighter shade of the header
+  blue with the body ink color.
+
+### Changed
+
+- Settings is opaque white rather than glass. It is large and long-lived, so a
+  translucent panel keeps whatever is behind it competing with the content.
+- Tooltips dropped their `backdrop-filter`: moving between ribbon buttons was
+  creating and destroying a filter layer per hover, which stuttered and left
+  ghosts behind.
+
+### Fixed
+
+- The palette's blue focus ring is drawn on `.prompt-input-container.is-focused`,
+  so clearing the input's own border left it in place.
+- Icon buttons, property keys, and property value inputs no longer inherit the
+  outlined treatment meant for text buttons and text fields.
+- Active sidebar tab icons stay white after the window loses focus.
+- Inline code is pink on both render paths; in live preview it is a CodeMirror
+  token span, not a `<code>` element.
+- Restored subpixel font smoothing — `antialiased` costs about half a pixel of
+  stroke weight, which is visible on dense CJK glyphs.
+- The vault switcher band no longer overflows the sidebar; it spans its parent
+  instead of cancelling its own margins.
+
 ## 0.2.1 — 2026-08-29
 
 ### Changed
