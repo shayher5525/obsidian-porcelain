@@ -3783,3 +3783,40 @@ body {
   -webkit-backdrop-filter: blur(var(--pc-settings-blur)) saturate(160%);
   backdrop-filter: blur(var(--pc-settings-blur)) saturate(160%);
 }
+
+/* =====================================================================
+ * 高亮改青瓷色
+ *
+ * 青瓷釉是偏青的灰蓝（大致 hsl(178, 30%, 68%) 一带），不是纯蓝。
+ * 底色取它的浅淡版本，文字用同色系压深的深青，保证在浅底上的对比。
+ * ===================================================================== */
+
+body {
+  --pc-celadon: hsl(178, 46%, 84%);
+  --pc-celadon-ink: hsl(186, 62%, 24%);
+  --text-highlight-bg: var(--pc-celadon);
+}
+
+.theme-dark {
+  --pc-celadon: hsla(178, 40%, 52%, 0.28);
+  --pc-celadon-ink: hsl(178, 52%, 78%);
+}
+
+.markdown-rendered mark,
+.cm-highlight,
+.markdown-source-view.mod-cm6 .cm-highlight,
+.cm-s-obsidian .cm-highlight {
+  background: var(--pc-celadon);
+  color: var(--pc-celadon-ink);
+  border-radius: var(--radius-s);
+  padding: 0.05em 0.25em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* 高亮标记本身（==），光标停在该行时可见 */
+.cm-formatting-highlight {
+  background: var(--pc-celadon);
+  color: var(--pc-celadon-ink);
+  opacity: 0.55;
+}
