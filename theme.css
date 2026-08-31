@@ -3820,3 +3820,14 @@ body {
   color: var(--pc-celadon-ink);
   opacity: 0.55;
 }
+
+/* 青瓷再往蓝偏：色相 178 → 192，饱和度提一档 */
+body {
+  --pc-celadon: hsl(192, 58%, 82%);
+  --pc-celadon-ink: hsl(198, 68%, 24%);
+}
+
+.theme-dark {
+  --pc-celadon: hsla(192, 52%, 52%, 0.3);
+  --pc-celadon-ink: hsl(192, 58%, 80%);
+}
