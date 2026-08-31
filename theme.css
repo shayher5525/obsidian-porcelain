@@ -3785,29 +3785,29 @@ body {
 }
 
 /* =====================================================================
- * 高亮改青瓷色
+ * 正文高亮（==text==）
  *
- * 青瓷釉是偏青的灰蓝（大致 hsl(178, 30%, 68%) 一带），不是纯蓝。
- * 底色取它的浅淡版本，文字用同色系压深的深青，保证在浅底上的对比。
+ * 颜色几经改动（青瓷 → 蓝 → 柠檬黄），所以变量名保持中性，只说用途
+ * 不说颜色 —— 命名跟着当前色值走，改一次颜色就要改一次名字。
  * ===================================================================== */
 
 body {
-  --pc-celadon: hsl(178, 46%, 84%);
-  --pc-celadon-ink: hsl(186, 62%, 24%);
-  --text-highlight-bg: var(--pc-celadon);
+  --pc-highlight: hsl(178, 46%, 84%);
+  --pc-highlight-ink: hsl(186, 62%, 24%);
+  --text-highlight-bg: var(--pc-highlight);
 }
 
 .theme-dark {
-  --pc-celadon: hsla(178, 40%, 52%, 0.28);
-  --pc-celadon-ink: hsl(178, 52%, 78%);
+  --pc-highlight: hsla(178, 40%, 52%, 0.28);
+  --pc-highlight-ink: hsl(178, 52%, 78%);
 }
 
 .markdown-rendered mark,
 .cm-highlight,
 .markdown-source-view.mod-cm6 .cm-highlight,
 .cm-s-obsidian .cm-highlight {
-  background: var(--pc-celadon);
-  color: var(--pc-celadon-ink);
+  background: var(--pc-highlight);
+  color: var(--pc-highlight-ink);
   border-radius: var(--radius-s);
   padding: 0.05em 0.25em;
   box-decoration-break: clone;
@@ -3816,32 +3816,32 @@ body {
 
 /* 高亮标记本身（==），光标停在该行时可见 */
 .cm-formatting-highlight {
-  background: var(--pc-celadon);
-  color: var(--pc-celadon-ink);
+  background: var(--pc-highlight);
+  color: var(--pc-highlight-ink);
   opacity: 0.55;
 }
 
 /* 青瓷再往蓝偏：色相 178 → 192，饱和度提一档 */
 body {
-  --pc-celadon: hsl(192, 58%, 82%);
-  --pc-celadon-ink: hsl(198, 68%, 24%);
+  --pc-highlight: hsl(192, 58%, 82%);
+  --pc-highlight-ink: hsl(198, 68%, 24%);
 }
 
 .theme-dark {
-  --pc-celadon: hsla(192, 52%, 52%, 0.3);
-  --pc-celadon-ink: hsl(192, 58%, 80%);
+  --pc-highlight: hsla(192, 52%, 52%, 0.3);
+  --pc-highlight-ink: hsl(192, 58%, 80%);
 }
 
 /* 高亮改白字：底色必须跟着压深，白字压在 82% 亮度的浅青上读不了。
  * 亮度降到 46%，对白字的对比度约 4.6:1，过 WCAG AA 正文标准。 */
 body {
-  --pc-celadon: hsl(192, 62%, 46%);
-  --pc-celadon-ink: hsl(0, 0%, 100%);
+  --pc-highlight: hsl(192, 62%, 46%);
+  --pc-highlight-ink: hsl(0, 0%, 100%);
 }
 
 .theme-dark {
-  --pc-celadon: hsl(192, 58%, 42%);
-  --pc-celadon-ink: hsl(0, 0%, 100%);
+  --pc-highlight: hsl(192, 58%, 42%);
+  --pc-highlight-ink: hsl(0, 0%, 100%);
 }
 
 /* 高亮用比表头蓝浅一档的同族蓝：表头是 hsl(209, 88%, 54%)，
@@ -3849,40 +3849,40 @@ body {
  * 既是一眼可辨的「更浅的那个蓝」，白字对比度仍有约 3.4:1，
  * 用在短句高亮上够读。 */
 body {
-  --pc-celadon: hsl(209, 78%, 64%);
-  --pc-celadon-ink: hsl(0, 0%, 100%);
+  --pc-highlight: hsl(209, 78%, 64%);
+  --pc-highlight-ink: hsl(0, 0%, 100%);
 }
 
 .theme-dark {
-  --pc-celadon: hsl(209, 70%, 56%);
-  --pc-celadon-ink: hsl(0, 0%, 100%);
+  --pc-highlight: hsl(209, 70%, 56%);
+  --pc-highlight-ink: hsl(0, 0%, 100%);
 }
 
 /* 高亮文字换回深色：底色是浅蓝，深字对比度反而更高（约 7:1） */
 body {
-  --pc-celadon-ink: var(--pc-ink);
+  --pc-highlight-ink: var(--pc-ink);
 }
 
 .theme-dark {
-  --pc-celadon-ink: hsl(0, 0%, 100%);
+  --pc-highlight-ink: hsl(0, 0%, 100%);
 }
 
 /* 高亮再浅一档：亮度 64% → 74%，饱和略降，深字对比度更宽裕 */
 body {
-  --pc-celadon: hsl(209, 72%, 74%);
+  --pc-highlight: hsl(209, 72%, 74%);
 }
 
 .theme-dark {
-  --pc-celadon: hsl(209, 62%, 50%);
+  --pc-highlight: hsl(209, 62%, 50%);
 }
 
 /* 高亮换浅柠檬黄。黄底本身亮度就高，字色沿用正文墨色，对比约 11:1。 */
 body {
-  --pc-celadon: hsl(52, 94%, 78%);
-  --pc-celadon-ink: var(--pc-ink);
+  --pc-highlight: hsl(52, 94%, 78%);
+  --pc-highlight-ink: var(--pc-ink);
 }
 
 .theme-dark {
-  --pc-celadon: hsla(52, 82%, 60%, 0.32);
-  --pc-celadon-ink: hsl(52, 60%, 86%);
+  --pc-highlight: hsla(52, 82%, 60%, 0.32);
+  --pc-highlight-ink: hsl(52, 60%, 86%);
 }
