@@ -3857,3 +3857,12 @@ body {
   --pc-celadon: hsl(209, 70%, 56%);
   --pc-celadon-ink: hsl(0, 0%, 100%);
 }
+
+/* 高亮文字换回深色：底色是浅蓝，深字对比度反而更高（约 7:1） */
+body {
+  --pc-celadon-ink: var(--pc-ink);
+}
+
+.theme-dark {
+  --pc-celadon-ink: hsl(0, 0%, 100%);
+}
