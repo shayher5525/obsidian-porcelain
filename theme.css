@@ -259,6 +259,14 @@ body {
   color: var(--text-normal);
 }
 
+/* The workspace content can end up a few px taller than the window. With
+ * overflow: hidden it still accepts programmatic scrolling (focus /
+ * scrollIntoView), which shifts the whole tab row up until the active tab
+ * touches the window's top edge. clip looks identical but cannot scroll. */
+.workspace {
+  overflow: clip;
+}
+
 /* Popout windows have no app content behind them; give them a floor so
  * teardown never exposes the bare (black) Electron window. */
 body.is-popout-window {
