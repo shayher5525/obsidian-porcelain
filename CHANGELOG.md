@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.4 — 2026-09-19
+
+### Changed
+
+- **Bases tables are easier to scan.** The sticky header now uses the active
+  tab's blue with white labels and icons. Data rows alternate between the solid
+  surface color and an 8% blue tint, with a stronger blue tint on hover.
+- Autocomplete suggestions use an opaque theme surface instead of glass. They
+  keep their border, radius and shadow without creating a backdrop-filter layer.
+
+### Fixed
+
+- Opening a `title` cell suggestion and then scrolling a Bases table no longer
+  leaves copies of the suggestion popup or recycled rows behind.
+- Sticky Bases headers now paint the header, row and cell layers, preventing
+  scrolling content from showing through the header.
+
 ## 0.3.3 — 2026-09-19
 
 ### Changed

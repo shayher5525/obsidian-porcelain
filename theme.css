@@ -2909,6 +2909,80 @@ body {
   contain: none;
 }
 
+/* Bases 表格滚动重影
+ *
+ * Bases 表格是虚拟滚动，每一行都是独立的 transform 层。本主题让所有
+ * 结构容器透明、把玻璃层透出来；打开单元格建议框后，backdrop-filter
+ * 又会重采样这些正在移动的层。若滚动表面透明，Chromium 合成旧帧时没有
+ * 不透明像素将其覆盖，于是旧行会留在原位形成重影。
+ *
+ * --background-primary 在本主题中刻意是 transparent，不能作为这里的
+ * “实底”。使用专门的不透明表面色，并把表格设为独立绘制边界，保证虚拟
+ * 行每帧都在确定的底色上合成。
+ *
+ * 表头沿用活动页面标签的主题蓝与白色前景。数据行用实白/浅蓝斑马纹，
+ * 除了便于横向阅读，也保证 sticky 表头和滚动内容之间始终有不透明遮挡。 */
+.bases-table-container {
+  --bases-table-header-background: var(--pc-blue);
+  --bases-table-header-background-hover: var(--pc-blue-lo);
+  --bases-table-header-color: var(--pc-on-color);
+  --pc-bases-row-alt: color-mix(in srgb, var(--pc-blue) 8%, var(--pc-solid));
+  --pc-bases-row-hover: color-mix(in srgb, var(--pc-blue) 15%, var(--pc-solid));
+
+  background-color: var(--pc-solid);
+  isolation: isolate;
+}
+
+.bases-thead {
+  --bases-table-header-background: var(--pc-blue);
+  --bases-table-header-background-hover: var(--pc-blue-lo);
+  --bases-table-header-color: var(--pc-on-color);
+
+  background: var(--pc-blue);
+  color: var(--pc-on-color);
+  isolation: isolate;
+}
+
+/* Bases 把 sticky 表头拆成外层、绝对定位行和绝对定位单元格三个绘制层。
+ * 只给 .bases-thead 上色时，后两层仍可能显示透明背景，滚动内容便会穿透。
+ * 三层全部使用实色，确保每个表头单元格都能遮住下方数据。 */
+.bases-thead > .bases-tr,
+.bases-thead .bases-td {
+  background-color: var(--pc-blue);
+}
+
+.bases-thead .bases-td:hover,
+.bases-thead .bases-td.has-active-menu {
+  background-color: var(--pc-blue-lo);
+}
+
+.bases-thead .bases-table-header,
+.bases-thead .bases-table-header-label,
+.bases-thead .bases-table-header-name,
+.bases-thead .bases-table-header-icon,
+.bases-thead .bases-table-header-sort,
+.bases-thead .clickable-icon,
+.bases-thead svg {
+  color: var(--pc-on-color);
+  stroke: currentColor;
+}
+
+.bases-tbody {
+  background: var(--pc-solid);
+}
+
+.bases-tbody > .bases-tr:nth-child(odd of .bases-tr:not(.bases-table-group-summary-row)) {
+  background-color: var(--pc-solid);
+}
+
+.bases-tbody > .bases-tr:nth-child(even of .bases-tr:not(.bases-table-group-summary-row)) {
+  background-color: var(--pc-bases-row-alt);
+}
+
+.bases-tbody > .bases-tr:hover {
+  background-color: var(--pc-bases-row-hover);
+}
+
 /* Tooltip 蓝加深：底色亮度 58% → 46%，alpha 提到 0.5。
  * 之前压在浅色侧边栏上，白字和背景的对比不够。 */
 body {
@@ -3175,14 +3249,29 @@ body {
 }
 
 .prompt,
-.suggestion-container,
-.suggestion-popover,
 .popover.hover-popover,
 .menu,
 .modal {
   background-color: var(--pc-popup-bg);
   -webkit-backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
   backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Bases 的单元格编辑器会让建议框跟随虚拟滚动内容移动。建议框若使用
+ * backdrop-filter，Chromium 会把它放进独立的滤镜合成层；快速滚动时旧层
+ * 纹理不会总被及时清除，因而在先前位置留下完整的圆角框和文字残影。
+ *
+ * 建议框面积很小，使用不透明弹出层仍保留圆角、边框与阴影，同时避免
+ * 创建滤镜层。该规则也覆盖普通自动完成建议，防止同一缺陷在其他可滚动
+ * 视图中出现。 */
+.suggestion-container,
+.suggestion-popover {
+  background-color: var(--pc-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   border: 1px solid var(--pc-line);
   border-radius: var(--pc-radius-lg);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
