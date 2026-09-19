@@ -7,7 +7,7 @@
   </tr>
 </table>
 
-[English](README.md) · [中文](README_zh.md) · **日本語** · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
+[English](../README.md) · [中文](README_zh.md) · **日本語** · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
 
 白磁の質感を持つ Obsidian テーマ —— 半透明の表面、ブルーのアクセント、フラットなコントロール、両端がフェードアウトするセパレーター。
 

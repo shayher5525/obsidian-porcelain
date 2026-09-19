@@ -7,7 +7,7 @@
   </tr>
 </table>
 
-[English](README.md) · [中文](README_zh.md) · **한국어** · [日本語](README_ja.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
+[English](../README.md) · [中文](README_zh.md) · **한국어** · [日本語](README_ja.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
 
 백자기 질감의 Obsidian 테마 — 반투명 표면, 파란색 액센트, 플랫 컨트롤, 양쪽 끝이 페이드아웃되는 구분선.
 

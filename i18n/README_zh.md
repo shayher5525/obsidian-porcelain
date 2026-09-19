@@ -7,7 +7,7 @@
   </tr>
 </table>
 
-[English](README.md) · **中文** · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
+[English](../README.md) · **中文** · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
 
 一款白瓷质感的 Obsidian 主题 —— 半透明表面、蓝色点缀、扁平控件，以及两端渐隐的分隔线。
 

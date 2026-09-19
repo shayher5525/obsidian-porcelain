@@ -7,7 +7,7 @@
   </tr>
 </table>
 
-[English](README.md) · [中文](README_zh.md) · **Italiano** · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md)
+[English](../README.md) · [中文](README_zh.md) · **Italiano** · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md)
 
 Un tema Obsidian di porcellana bianca — superfici traslucide, accenti blu, controlli piatti e separatori che sfumano alle due estremità.
 
