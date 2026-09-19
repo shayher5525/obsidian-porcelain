@@ -1,4 +1,15 @@
-# Porcelain
+<p align="center">
+  <img src="porcelain-avatar.png" width="200" alt="Porcelain mascot">
+</p>
+
+<h1 align="center">Porcelain for <a href="https://obsidian.md/">Obsidian</a></h1>
+
+<table>
+  <tr>
+    <td><img src="screenshot-light.png" alt="Porcelain — light mode"></td>
+    <td><img src="screenshot-dark.png" alt="Porcelain — dark mode"></td>
+  </tr>
+</table>
 
 <div align="center">
   <a href="https://github.com/shayher5525/obsidian-porcelain/releases/latest"><img src="https://img.shields.io/github/v/release/shayher5525/obsidian-porcelain?style=for-the-badge&amp;label=release&amp;labelColor=252525&amp;color=238FEF&amp;logo=github" alt="Latest release"></a>
@@ -7,13 +18,6 @@
   <br>
   <a href="https://github.com/shayher5525/obsidian-porcelain/blob/main/LICENSE"><img src="https://img.shields.io/github/license/shayher5525/obsidian-porcelain?style=for-the-badge&amp;label=license&amp;labelColor=252525&amp;color=238FEF" alt="License"></a>
 </div>
-
-<table>
-  <tr>
-    <td><img src="screenshot-light.png" alt="Porcelain — light mode"></td>
-    <td><img src="screenshot-dark.png" alt="Porcelain — dark mode"></td>
-  </tr>
-</table>
 
 **English** · [中文](i18n/README_zh.md) · [日本語](i18n/README_ja.md) · [한국어](i18n/README_ko.md) · [Français](i18n/README_fr.md) · [Español](i18n/README_es.md) · [Italiano](i18n/README_it.md)
 
