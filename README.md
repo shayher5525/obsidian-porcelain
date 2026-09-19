@@ -1,6 +1,11 @@
 # Porcelain
 
-![Porcelain](screenshot.png)
+<table>
+  <tr>
+    <td><img src="screenshot-light.png" alt="Porcelain — light mode"></td>
+    <td><img src="screenshot-dark.png" alt="Porcelain — dark mode"></td>
+  </tr>
+</table>
 
 **English** · [中文](README_zh.md) · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Español](README_es.md) · [Italiano](README_it.md)
 
