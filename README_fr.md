@@ -1,5 +1,7 @@
 # Porcelain
 
+![Porcelain](screenshot.png)
+
 [English](README.md) · [中文](README_zh.md) · **Français** · [日本語](README_ja.md) · [한국어](README_ko.md) · [Español](README_es.md) · [Italiano](README_it.md)
 
 Un thème Obsidian à la porcelaine blanche — surfaces translucides, accents bleus, contrôles plats et séparateurs qui s'estompent à leurs deux extrémités.

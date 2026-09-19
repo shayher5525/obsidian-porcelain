@@ -1,5 +1,7 @@
 # Porcelain
 
+![Porcelain](screenshot.png)
+
 [English](README.md) · [中文](README_zh.md) · **Español** · [日本語](README_ja.md) · [한국어](README_ko.md) · [Français](README_fr.md) · [Italiano](README_it.md)
 
 Un tema de Obsidian de porcelana blanca — superficies translúcidas, acentos azules, controles planos y separadores que se desvanecen en ambos extremos.

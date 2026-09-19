@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.3.3 — 2026-09-19
+
+### Changed
+
+- **Table headers respect column alignment.** Headers without an alignment
+  marker are still centered, but `:---`, `:---:` and `---:` now apply to the
+  header cell too instead of being forced to center.
+- **CSS lint clean-up.** No `!important` left (there were 47). The
+  file-tree tier colors now pick a `--pc-tier` / `--pc-tier-ink` per depth
+  and paint it in one rule; Obsidian's own higher-specificity rules are
+  steered through the variables they already read (`--nav-item-color-*`,
+  `--icon-color-*`, `--code-background`, `--code-normal`).
+- Named colors `white` / `black` are written as `#fff` / `#000`.
+- Every README opens with the theme screenshot.
+- `theme.css` shrinks from 141 KB to 101 KB: 176 declarations that a later
+  rule with the same selector always overrode are removed, along with six
+  custom properties nothing read and the comments that described them.
+
+### Removed
+
+- `box-decoration-break`. Inline code already gets it from Obsidian; on
+  `==highlights==` that wrap across lines, the break edges are now cut
+  straight instead of each line getting its own rounded ends.
+- `text-decoration-thickness` on links; the underline uses the font's own
+  thickness. `abbr` draws its dotted underline as a border instead.
+
+### Fixed
+
+- `--pc-popup-bg` / `--pc-popup-blur`, documented in the README, had stopped
+  affecting menus, modals and the command palette after a duplicate pair of
+  tokens took over. The duplicates are gone; the documented tokens work
+  again with the same defaults.
+
 ## 0.3.2 — 2026-09-19
 
 ### Changed
