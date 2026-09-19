@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.2 — 2026-09-19
+
+### Changed
+
+- `authorUrl` in `manifest.json` points to the author's GitHub profile instead
+  of the theme repository.
+
+### Removed
+
+- Two `body:has(...)` rules written for a private dashboard plugin. They did
+  nothing for anyone else, and `:has` on `body` forces broad selector
+  invalidation.
+
 ## 0.3.1 — 2026-09-19
 
 ### Changed

@@ -2030,18 +2030,6 @@ body:not(.is-focused) .nn-desktop .nn-navitem.nn-folder[data-level="10"].nn-sele
   background: transparent;
 }
 
-/* Vault Dashboard X updates a large paint surface beside the translucent
- * sidebars. Chromium may then reuse damaged transparent tiles, leaving old
- * hover rows (and even DevTools) visible. While the view is mounted, give the
- * renderer one opaque root surface that deterministically clears old frames. */
-body:has(.workspace-leaf-content[data-type='vault-dashboard-x-view']) .app-container {
-  background: var(--pc-solid) !important;
-}
-
-body:has(.workspace-leaf-content[data-type='vault-dashboard-x-view']) .app-container::before {
-  display: none;
-}
-
 /* Quick actions read white only on the colored rows */
 .nn-desktop .nn-file:hover .nn-quick-actions-panel,
 .nn-file.nn-selected .nn-quick-actions-panel {
