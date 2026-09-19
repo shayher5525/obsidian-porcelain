@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.3.1 — 2026-09-19
+
+### Changed
+
+- **Square callouts.** Callouts lose their rounded corners. The title keeps its
+  solid colored bar; the body drops its 1px outline and takes a 12% wash of the
+  same color instead.
+- **Tighter callouts.** Smaller title and body padding, no outer margin on the
+  first and last paragraph, and a 1.7 line height inside the body, so short
+  callouts no longer float in empty space.
+- **Lemon highlights.** `==text==` is now a pale lemon wash with the body ink
+  color (about 11:1 contrast); dark mode uses a translucent yellow.
+- The highlight tokens are renamed `--pc-celadon` → `--pc-highlight` and
+  `--pc-celadon-ink` → `--pc-highlight-ink`. Snippets that override the old
+  names need updating.
+
+### Fixed
+
+- The active tab could end up touching the window's top edge. The workspace
+  is a few px taller than the window, and `overflow: hidden` still allows
+  programmatic scrolling, so a focus change shifted the whole tab row up.
+  `.workspace` now uses `overflow: clip`.
+
+### Added
+
+- `screenshot.png`, a 512×288 thumbnail for the community theme gallery.
+
 ## 0.3.0 — 2026-08-29
 
 ### Added
