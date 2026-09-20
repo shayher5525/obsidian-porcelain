@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.5 — 2026-09-20
+
+### Changed
+
+- Notices use an opaque theme surface instead of glass. They keep their border,
+  radius and shadow without creating a backdrop-filter layer.
+
+### Fixed
+
+- Scrolling a note while a notice is on screen no longer leaves ghost copies of
+  the text behind. The notice's backdrop-filter created a compositing layer over
+  the theme's transparent editor surface, so old frames had no opaque pixels to
+  cover them.
+
 ## 0.3.4 — 2026-09-19
 
 ### Changed

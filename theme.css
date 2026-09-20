@@ -1375,11 +1375,18 @@ body.is-mobile .mobile-toolbar {
   border-radius: 3px;
 }
 
-/* Notices */
+/* Notices
+ *
+ * 与 .tooltip、.suggestion-container 同一类缺陷：通知浮在编辑器右上角，
+ * 而本主题把编辑器容器设为透明、由固定玻璃层透出背景。通知一旦带
+ * backdrop-filter，Chromium 会在这块透明滚动面上方新建滤镜合成层；滚动
+ * 时旧帧没有不透明像素可覆盖，正文便在原位留下整段重影。
+ *
+ * 通知区域很小且转瞬即逝，用不透明底即可，圆角、描边与阴影照旧。 */
 .notice {
-  background: var(--pc-popup-bg);
-  -webkit-backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
-  backdrop-filter: blur(var(--pc-popup-blur)) saturate(180%);
+  background: var(--pc-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   color: var(--text-normal);
   border: 1px solid var(--pc-line);
   border-radius: var(--pc-radius-lg);
