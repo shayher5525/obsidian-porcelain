@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.6 — 2026-09-24
+
+### Changed
+
+- **Menu hover matches the active tab.** Hovered and keyboard-selected menu
+  items use the active tab's blue with the same bloom, and the selectors now
+  outrank Obsidian's default hover so the theme color actually applies.
+- Menus use a 95% opaque theme surface instead of blurred glass. They keep
+  their border, radius and shadow without creating a backdrop-filter layer.
+
+### Fixed
+
+- Closing a menu or switching submenus no longer leaves a ghost copy of the
+  menu, or a white rectangle, over the note. The menu's backdrop-filter created
+  a compositing layer over the theme's transparent editor surface.
+
 ## 0.3.5 — 2026-09-20
 
 ### Changed

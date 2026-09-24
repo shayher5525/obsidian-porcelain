@@ -916,14 +916,32 @@ body {
   border-radius: var(--pc-radius);
 }
 
-.menu-item:hover,
-.menu-item.selected {
-  background: var(--pc-blue);
+/* Same blue + bloom as the active tab. :not() chain matches Obsidian's
+ * own selector so its --background-modifier-hover can't win. */
+.menu-item:not(.is-disabled):not(.is-label):hover,
+.menu-item.selected:not(.is-disabled):not(.is-label) {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, #fff var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, #fff var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, #000 var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
   color: var(--pc-on-color);
 }
 
-.menu-item:hover .menu-item-icon,
-.menu-item.selected .menu-item-icon {
+.menu-item:not(.is-disabled):not(.is-label):hover :is(.menu-item-icon, .menu-item-title),
+.menu-item.selected:not(.is-disabled):not(.is-label) :is(.menu-item-icon, .menu-item-title) {
   color: var(--pc-on-color);
 }
 
@@ -3282,6 +3300,19 @@ body {
   border: 1px solid var(--pc-line);
   border-radius: var(--pc-radius-lg);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 右键菜单重影与白色底块
+ *
+ * 与建议框同一缺陷：菜单浮在透明的编辑器上，backdrop-filter 为它新建
+ * 滤镜合成层；关闭或切换子菜单后旧层不总被清除，留下整块菜单残影，
+ * 或在正文上留下一块白色矩形。菜单去掉滤镜与动画，只靠 95% 实底的
+ * alpha 保留一点通透感，不新建滤镜层。 */
+.menu {
+  background-color: color-mix(in srgb, var(--pc-solid) 95%, transparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition: none;
 }
 
 /* 设置面板半透明 */
