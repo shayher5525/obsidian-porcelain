@@ -1374,10 +1374,19 @@ body.is-mobile .mobile-toolbar {
   background-repeat: no-repeat;
 }
 
-/* Search results */
-.search-result-file-title {
+/* Search results
+ *
+ * Obsidian 给展开的结果标题设 color: var(--nav-item-color-active)，本主题
+ * 把那个变量设成了选中态的白字，于是整列标题在浅底上变白、只剩高亮块。
+ * 用同等权重把常态压回正文色；悬停仍是橙底白字。 */
+.search-result-file-title,
+.search-result:not(.is-collapsed) .search-result-file-title {
   border-radius: var(--pc-radius);
   color: var(--pc-ink);
+}
+
+.search-result .search-result-file-title:hover {
+  color: var(--pc-on-color);
 }
 
 .search-result-file-match {
@@ -1919,6 +1928,25 @@ body {
 .nn-split-container > .nn-nav-pane,
 .nn-split-container > .nn-list-pane {
   z-index: 0;
+}
+
+/* Notebook Navigator 的吸顶日期分组标题（Today、Yesterday…）用
+ * --nn-theme-list-bg 做底，而它取自本主题刻意透明的 --background-primary，
+ * 于是滚上来的笔记标题和时间直接透过标题叠在一起。与上面的库切换栏同理：
+ * 给吸顶副本一层近乎不透明、同色调的底，把下面的行遮住。 */
+.nn-list-sticky-header {
+  --nn-theme-list-bg: rgba(var(--pc-tint), 0.94);
+}
+
+.theme-dark .nn-list-sticky-header {
+  --nn-theme-list-bg: rgba(var(--pc-tint), 0.96);
+}
+
+/* 标题本体和 ::before 都铺这层底会叠成两层 alpha，颜色比侧栏深一档；
+ * 只让撑满整行宽度的 ::before 负责遮挡。 */
+body .nn-list-sticky-header .nn-list-group-header,
+body .nn-list-sticky-header .nn-manual-sort-group-header-shell {
+  background-color: transparent;
 }
 
 /* =====================================================================
@@ -3300,6 +3328,69 @@ body {
   border: 1px solid var(--pc-line);
   border-radius: var(--pc-radius-lg);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 搜索框下拉与结果列表重叠
+ *
+ * 搜索面板的建议框带 .mod-search-suggestion，Obsidian 用两个类的选择器
+ * 把它和内部 .suggestion 的底色设为 --background-secondary —— 本主题里
+ * 那是 transparent，于是上面的实底被覆盖，下拉框变成全透明，搜索结果直接
+ * 透出来和选项叠在一起。深色模式的 .theme-dark 规则同样权重更高，会换成
+ * 无模糊的半透明底，也会透字。其他建议框统一压回不透明实底。
+ *
+ * 搜索下拉要半透明，但不能用 backdrop-filter：试过弹出层玻璃，它同样
+ * 浮在透明的侧栏与编辑器上，滤镜合成层在关闭、结果刷新后没被清除，留下
+ * 悬浮预览残影和白色矩形 —— 与右键菜单同一缺陷。做法也与菜单相同：
+ * 不建滤镜层，只靠实底的 alpha 透出一点底色。比菜单再透一档，但仍足够
+ * 压住下面的结果文字。 */
+body {
+  --pc-search-suggest-opacity: 90%;
+}
+
+.theme-dark .suggestion-container,
+.theme-dark .suggestion-popover {
+  background-color: var(--pc-solid);
+}
+
+.suggestion-container.mod-search-suggestion,
+.theme-dark .suggestion-container.mod-search-suggestion {
+  background-color: color-mix(in srgb, var(--pc-solid) var(--pc-search-suggest-opacity), transparent);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.suggestion-container.mod-search-suggestion .suggestion {
+  background-color: transparent;
+}
+
+/* 悬停与键盘选中同为活动标签页的蓝底 + 离轴光晕、白字，与菜单项一致。
+ * Obsidian 会随鼠标移动把 is-selected 挪到指针下的项，两者分开着色会
+ * 同时出现两块高亮。分组标题不可点，排除在外。 */
+.suggestion-container.mod-search-suggestion .suggestion-item:not(.mod-group):hover,
+.suggestion-container.mod-search-suggestion .suggestion-item.is-selected:not(.mod-group) {
+  --pc-fill: var(--pc-blue);
+  background-color: var(--pc-fill);
+  background-image: radial-gradient(
+      130% 200% at 92% 45%,
+      color-mix(in srgb, #fff var(--pc-bloom-light), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      70% 150% at 58% 8%,
+      color-mix(in srgb, #fff var(--pc-bloom-light-soft), var(--pc-fill)) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      110% 190% at 12% 78%,
+      color-mix(in srgb, #000 var(--pc-bloom-dark), var(--pc-fill)) 0%,
+      transparent 100%
+    );
+  color: var(--pc-on-color);
+}
+
+.suggestion-container.mod-search-suggestion .suggestion-item:not(.mod-group):hover *,
+.suggestion-container.mod-search-suggestion .suggestion-item.is-selected:not(.mod-group) * {
+  color: var(--pc-on-color);
 }
 
 /* 右键菜单重影与白色底块

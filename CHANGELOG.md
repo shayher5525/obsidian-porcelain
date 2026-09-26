@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.3.7 — 2026-09-26
+
+### Changed
+
+- **Search suggestions match the active tab.** Hovered and keyboard-selected
+  items in the search box dropdown use the active tab's blue with the same
+  bloom and white text. Group headings stay unhighlighted.
+- The search box dropdown uses a 90% opaque theme surface, a step more
+  translucent than menus, without a backdrop-filter layer. The opacity is
+  exposed as `--pc-search-suggest-opacity`.
+
+### Fixed
+
+- The search box dropdown no longer shows the results list through it. Obsidian
+  set its background to `--background-secondary`, which the theme keeps
+  transparent, with a selector that outranked the theme's solid surface.
+- In dark mode, autocomplete suggestions use the solid surface again instead of
+  an unblurred 82% veil that let text show through.
+- Search result titles no longer turn white on the light background. Obsidian
+  colors expanded result titles with `--nav-item-color-active`, which the theme
+  sets to white for selected rows.
+- Notebook Navigator's sticky date headers (Today, Yesterday…) now cover the
+  notes that scroll under them instead of overlapping their titles and times.
+
 ## 0.3.6 — 2026-09-24
 
 ### Changed
